@@ -84,3 +84,33 @@ localhost                  : ok=5    changed=4    unreachable=0    failed=0    s
 
    • complete
 ```
+
+## Help
+
+```shell
+» ./rolecule --help
+rolecule uses docker or podman to test your
+configuration management roles/recipes/modules in a systemd enabled container,
+then tests them with a verifier (goss/testinfra).
+
+Usage:
+  rolecule [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  converge    Run your configuration management tool to converge the configuration
+  create      Create a new container(s) to test the role in
+  destroy     Destroy everything
+  help        Help about any command
+  init        initialise the project with a nice new rolecule.yml file
+  list        list the containers
+  shell       get a shell in a container
+  test        Create the container(s), converge them, test them, then clean up
+  verify      verify your container
+
+Flags:
+  -d, --debug   enable debug output
+  -h, --help    help for rolecule
+
+Use "rolecule [command] --help" for more information about a command.
+```

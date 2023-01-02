@@ -25,7 +25,7 @@ func init() {
 var initCmd = &cobra.Command{
 	Use:     "init",
 	Aliases: []string{"sh", "login"},
-	Short:   "get a init in a container",
+	Short:   "initialise the project with a nice new rolecule.yml file",
 	// Long: `to quickly create a Cobra application.`,
 
 	Run: func(cmd *cobra.Command, args []string) {
