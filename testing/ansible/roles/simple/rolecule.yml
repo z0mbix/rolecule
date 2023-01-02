@@ -1,7 +1,7 @@
 ---
 engine:
-  name: docker
-  # name: podman
+  # name: docker
+  name: podman
 
 containers:
   - name: rockylinux-systemd-9.1-amd64

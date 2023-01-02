@@ -35,7 +35,7 @@ and usage of using your command.`,
 
 func create(cfg *config.Config) error {
 	for _, instance := range cfg.Instances {
-		log.Infof("creating container: %s", instance.GetContainerName())
+		log.Infof("creating %s container: %s", instance.Engine, instance.GetContainerName())
 		if instance.Engine.Exists(instance.GetContainerName()) {
 			log.Errorf("container already exists!")
 			continue

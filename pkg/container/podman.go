@@ -12,6 +12,10 @@ type PodmanEngine struct {
 	Socket string
 }
 
+func (p *PodmanEngine) String() string {
+	return p.Name
+}
+
 func (p *PodmanEngine) Run(image string, args []string) (string, error) {
 	containerArgs := append(args, image)
 	_, output, err := command.Execute(p.Name, containerArgs...)

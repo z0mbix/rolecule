@@ -12,6 +12,7 @@ type Engine interface {
 	Exists(string) bool
 	Shell(string) error
 	Remove(string) error
+	String() string
 }
 
 func NewEngine(name string) (Engine, error) {

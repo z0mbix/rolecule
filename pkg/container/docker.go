@@ -12,6 +12,10 @@ type DockerEngine struct {
 	Socket string
 }
 
+func (p *DockerEngine) String() string {
+	return p.Name
+}
+
 func (p *DockerEngine) Run(image string, args []string) (string, error) {
 	containerArgs := append(args, image)
 	_, output, err := command.Execute(p.Name, containerArgs...)
