@@ -108,7 +108,7 @@ ok 19 - Package: git: installed: matches expectation: [true]
 
 ## Help
 
-```shell
+```
 » rolecule --help
 rolecule uses docker or podman to test your
 configuration management roles/recipes/modules in a systemd enabled container,
