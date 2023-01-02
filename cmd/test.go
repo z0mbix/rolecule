@@ -20,37 +20,30 @@ var testCmd = &cobra.Command{
 	Long: `"test" will create the containers defined, run the provisioner of choice
 against them, test them with your verifier of choice, then destroy everything.`,
 
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.Get()
 		if err != nil {
-			return err
+			log.Fatal(err.Error())
 		}
-		log.Debugf("config: %+v", cfg)
 
-		log.Info("creating containers...")
 		err = create(cfg)
 		if err != nil {
-			return err
+			log.Fatal(err.Error())
 		}
 
-		log.Info("converging containers...")
 		err = converge(cfg)
 		if err != nil {
-			return err
+			log.Fatal(err.Error())
 		}
 
-		log.Info("verifing containers...")
 		err = verify(cfg)
 		if err != nil {
-			return err
+			log.Fatal(err.Error())
 		}
 
-		log.Info("destroying containers...")
 		err = destroy(cfg)
 		if err != nil {
-			return err
+			log.Fatal(err.Error())
 		}
-
-		return nil
 	},
 }

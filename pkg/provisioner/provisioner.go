@@ -3,7 +3,7 @@ package provisioner
 import "fmt"
 
 type Provisioner interface {
-	GetCommand() (string, []string)
+	GetCommand() (map[string]string, string, []string)
 }
 
 func NewProvisioner(name string) (Provisioner, error) {

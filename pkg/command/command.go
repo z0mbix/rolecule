@@ -32,8 +32,9 @@ func Execute(name string, args ...string) (int, string, error) {
 
 func ExecuteWithEnvVars(env map[string]string, name string, args ...string) (int, string, error) {
 	cmd := exec.Command(name, args...)
-	log.Debugf("executing command: %s", cmd)
-	cmd.Env = convertEnvVarMapToSlice(env)
+	envVars := convertEnvVarMapToSlice(env)
+	log.Debugf("executing command: %s with env vars: %+v", cmd, envVars)
+	cmd.Env = envVars
 	out, err := cmd.CombinedOutput()
 	exitCode := cmd.ProcessState.ExitCode()
 	if err != nil {

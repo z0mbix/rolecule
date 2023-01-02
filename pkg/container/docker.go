@@ -30,7 +30,7 @@ func (p *DockerEngine) Run(image string, args []string) (string, error) {
 	return output, nil
 }
 
-func (p *DockerEngine) Exec(name string, cmd string, args []string) (string, error) {
+func (p *DockerEngine) Exec(containerName string, envVars map[string]string, cmd string, args []string) (string, error) {
 	log.Debug("executing command in container")
 	return "", nil
 }

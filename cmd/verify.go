@@ -4,6 +4,8 @@ Copyright © 2022 David Wooldridge <zombie@zombix.org>
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/apex/log"
 	"github.com/spf13/cobra"
 	"github.com/z0mbix/rolecule/pkg/config"
@@ -19,25 +21,26 @@ var verifyCmd = &cobra.Command{
 	Short:   "verify your container",
 	// Long: `to quickly create a Cobra application.`,
 
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.Get()
 		if err != nil {
 			log.Fatal(err.Error())
 		}
 
-		log.Debugf("config: %+v", cfg)
-
-		return verify(cfg)
+		err = verify(cfg)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
 	},
 }
 
 func verify(cfg *config.Config) error {
 	for _, instance := range cfg.Instances {
-		instance.Engine = cfg.Engine
-		err := instance.Verify()
+		output, err := instance.Verify()
 		if err != nil {
-			return err
+			return fmt.Errorf("%w - %s", err, output)
 		}
+		fmt.Println(output)
 	}
 
 	return nil

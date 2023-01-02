@@ -8,7 +8,7 @@ import (
 
 type Engine interface {
 	Run(string, []string) (string, error)
-	Exec(string, string, []string) (string, error)
+	Exec(string, map[string]string, string, []string) (string, error)
 	Exists(string) bool
 	Shell(string) error
 	Remove(string) error

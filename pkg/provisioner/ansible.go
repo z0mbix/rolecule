@@ -7,8 +7,8 @@ type AnsibleProvisioner struct {
 	Env     map[string]string
 }
 
-func (a *AnsibleProvisioner) GetCommand() (string, []string) {
-	return a.Command, a.Args
+func (a *AnsibleProvisioner) GetCommand() (map[string]string, string, []string) {
+	return a.Env, a.Command, a.Args
 }
 
 var defaultAnsibleConfig = &AnsibleProvisioner{
@@ -19,6 +19,8 @@ var defaultAnsibleConfig = &AnsibleProvisioner{
 		"local",
 		"--inventory",
 		"localhost,",
+		"--diff",
+		"--verbose",
 		"tests/playbook.yml",
 	},
 	Env: map[string]string{

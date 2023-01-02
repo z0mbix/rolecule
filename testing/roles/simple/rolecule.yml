@@ -20,7 +20,7 @@ containers:
 
 provisioner:
   name: ansible
-  command: ansible-playbook --connection local --inventory localhost,
+  # command: ansible-playbook --connection local --inventory localhost,
   env:
     ANSIBLE_ROLES_PATH: .
     ANSIBLE_NOCOWS: True

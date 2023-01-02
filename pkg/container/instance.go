@@ -50,18 +50,15 @@ func (i *Instance) Create() (string, error) {
 }
 
 func (i *Instance) Converge() (string, error) {
-	cmd, args := i.Provisioner.GetCommand()
+	env, cmd, args := i.Provisioner.GetCommand()
 	log.Debugf("%s -> %v", cmd, args)
-	return i.Engine.Exec(i.GetContainerName(), cmd, args)
+	return i.Engine.Exec(i.GetContainerName(), env, cmd, args)
 }
 
-func (i *Instance) Verify() error {
-	// err := i.Engine.Exec()
-	// if err != nil {
-	// 	return err
-	// }
-
-	return nil
+func (i *Instance) Verify() (string, error) {
+	env, cmd, args := i.Verifier.GetCommand()
+	log.Debugf("%s -> %v", cmd, args)
+	return i.Engine.Exec(i.GetContainerName(), env, cmd, args)
 }
 
 func (i *Instance) Shell() error {

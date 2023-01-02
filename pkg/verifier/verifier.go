@@ -3,7 +3,7 @@ package verifier
 import "fmt"
 
 type Verifier interface {
-	GetCommand() []string
+	GetCommand() (map[string]string, string, []string)
 }
 
 func NewVerifier(name string) (Verifier, error) {
@@ -22,7 +22,7 @@ func NewVerifier(name string) (Verifier, error) {
 		containerName := "rolecule-rockylinux-systemd-9.1"
 		engineName := "podman"
 
-		return &GossVerifier{
+		return &TestInfraVerifier{
 			Name:    "testinfra",
 			Command: "py.test",
 			Args: []string{

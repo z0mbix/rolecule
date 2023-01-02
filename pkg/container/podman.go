@@ -1,6 +1,8 @@
 package container
 
 import (
+	"fmt"
+
 	"github.com/apex/log"
 	"github.com/z0mbix/rolecule/pkg/command"
 )
@@ -20,40 +22,27 @@ func (p *PodmanEngine) Run(image string, args []string) (string, error) {
 	return output, nil
 }
 
-// func (p *PodmanEngine) Start(name string) (string, error) {
-// 	log.Debug("starting container")
-// 	_, output, err := command.Execute(p.Name, "start", name)
-// 	if err != nil {
-// 		return output, err
-// 	}
-
-// 	return output, nil
-// }
-
-// func (p *PodmanEngine) Stop(name string) (string, error) {
-// 	log.Debug("stopping container")
-// 	_, output, err := command.Execute(p.Name, "stop", name)
-// 	if err != nil {
-// 		return output, err
-// 	}
-
-// 	return output, nil
-// }
-
-func (p *PodmanEngine) Exec(containerName string, cmd string, args []string) (string, error) {
+func (p *PodmanEngine) Exec(containerName string, envVars map[string]string, cmd string, args []string) (string, error) {
 	log.Debug("executing command in container")
 
 	execArgs := []string{
 		"exec",
 		"--interactive",
 		"--tty",
-		containerName,
-		cmd,
 	}
 
-	allArgs := append(execArgs, args...)
+	if len(envVars) > 0 {
+		for k, v := range envVars {
+			execArgs = append(execArgs, "--env")
+			execArgs = append(execArgs, fmt.Sprintf("%s=%s", k, v))
+		}
+	}
 
-	_, output, err := command.Execute(p.Name, allArgs...)
+	execArgs = append(execArgs, containerName)
+	execArgs = append(execArgs, cmd)
+	execArgs = append(execArgs, args...)
+
+	_, output, err := command.Execute(p.Name, execArgs...)
 	if err != nil {
 		return output, err
 	}
@@ -90,7 +79,6 @@ func (p *PodmanEngine) Remove(name string) error {
 func (p *PodmanEngine) Exists(name string) bool {
 	log.Debug("checking if container already exists")
 
-	// podman container inspect --format "{{.Name}}" rolecule-rockylinux-systemd-9.1-amd64
 	args := []string{
 		"container",
 		"inspect",

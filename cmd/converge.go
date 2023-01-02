@@ -4,6 +4,8 @@ Copyright © 2022 David Wooldridge <zombie@zombix.org>
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/apex/log"
 	"github.com/spf13/cobra"
 	"github.com/z0mbix/rolecule/pkg/config"
@@ -43,7 +45,7 @@ func converge(cfg *config.Config) error {
 		if err != nil {
 			log.Error(err.Error())
 		}
-		log.Info(output)
+		fmt.Println(output)
 	}
 
 	return nil
