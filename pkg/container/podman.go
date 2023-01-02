@@ -73,6 +73,17 @@ func (p *PodmanEngine) Shell(containerName string) error {
 
 func (p *PodmanEngine) Remove(name string) error {
 	log.Debug("removing container")
+
+	args := []string{
+		"rm",
+		"--force",
+		name,
+	}
+	exitCode, _, err := command.Execute(p.Name, args...)
+	if err != nil || exitCode != 0 {
+		return err
+	}
+
 	return nil
 }
 

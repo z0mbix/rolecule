@@ -43,7 +43,7 @@ func (i *Instance) Create() (string, error) {
 	args := append(instanceArgs, i.Args...)
 
 	log.Debugf("%+v", args)
-	output, err := i.Engine.Run(i.Image, args)
+	output, err := i.Run(i.Image, args)
 	if err != nil {
 		return output, err
 	}
@@ -53,13 +53,13 @@ func (i *Instance) Create() (string, error) {
 func (i *Instance) Converge() (string, error) {
 	env, cmd, args := i.Provisioner.GetCommand()
 	log.Debugf("%s -> %v", cmd, args)
-	return i.Engine.Exec(i.GetContainerName(), env, cmd, args)
+	return i.Exec(i.GetContainerName(), env, cmd, args)
 }
 
 func (i *Instance) Verify() (string, error) {
 	env, cmd, args := i.Verifier.GetCommand()
 	log.Debugf("%s -> %v", cmd, args)
-	return i.Engine.Exec(i.GetContainerName(), env, cmd, args)
+	return i.Exec(i.GetContainerName(), env, cmd, args)
 }
 
 func (i *Instance) Shell() error {
@@ -67,7 +67,7 @@ func (i *Instance) Shell() error {
 }
 
 func (i *Instance) Destroy() error {
-	return i.Engine.Remove(i.Name)
+	return i.Remove(i.GetContainerName())
 }
 
 func (i *Instance) GetContainerName() string {

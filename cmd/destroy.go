@@ -31,7 +31,7 @@ var destroyCmd = &cobra.Command{
 
 func destroy(cfg *config.Config) error {
 	for _, instance := range cfg.Instances {
-		instance.Engine = cfg.Engine
+		log.Infof("destroying container: %s", instance.GetContainerName())
 		err := instance.Destroy()
 		if err != nil {
 			return err
