@@ -153,3 +153,9 @@ Use "rolecule [command] --help" for more information about a command.
 - Document what is required for a container image
 - Test with docker on Linux
 - Test with docker desktop on Mac
+
+## Questions
+
+- Should we support Chef? (No real need as they have test-kitchen?)
+- Should we support InSpec? (I think probably yes, as it's pretty awesome)
+- Should we run testinfra/inspec inside the container or from outside? (Nice to not need all the python/ruby environments/packages on the host)
