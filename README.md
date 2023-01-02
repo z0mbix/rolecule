@@ -109,7 +109,7 @@ ok 19 - Package: git: installed: matches expectation: [true]
 ## Help
 
 ```shell
-» ./rolecule --help
+» rolecule --help
 rolecule uses docker or podman to test your
 configuration management roles/recipes/modules in a systemd enabled container,
 then tests them with a verifier (goss/testinfra).
@@ -135,3 +135,18 @@ Flags:
 
 Use "rolecule [command] --help" for more information about a command.
 ```
+
+## TODO
+
+- ~~Test on Mac~~
+- ~~Test on Linux~~
+- Support testinfra verifier
+- Support scenarios, making it possible to test a role with different tags
+- Support using custom provisioner command/args/env vars from rolecule.yml
+- Support using custom verifier command/args/env vars from rolecule.yml
+- Test converging with puppet apply
+- Implement `rolecule init` to generate a rolecule.yml file (use current directory structure to determine configuration management provisioner)
+- Write some tests :/
+- Document what is required for a container image
+- Test with docker on Linux
+- Test with docker desktop on Mac
