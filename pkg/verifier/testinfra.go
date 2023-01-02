@@ -1,7 +1,5 @@
 package verifier
 
-import "fmt"
-
 type TestInfraVerifier struct {
 	Name    string
 	Command string
@@ -24,6 +22,6 @@ var defaultTestInfraConfig = &TestInfraVerifier{
 	Args: []string{
 		"-vv",
 		"--hosts",
-		fmt.Sprintf("podman//foobar"),
+		"podman://foobar",
 	},
 }
