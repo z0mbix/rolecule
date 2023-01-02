@@ -103,6 +103,7 @@ ok 16 - File: /tmp/simple-directory: group: matches expectation: ["root"]
 ok 17 - File: /tmp/simple-directory: filetype: matches expectation: ["directory"]
 ok 18 - File: /tmp/simple-directory: size: matches expectation: [40]
 ok 19 - Package: git: installed: matches expectation: [true]
+   • destroying container: rolecule-rockylinux-systemd-9.1-amd64
    • complete
 ```
 
@@ -147,6 +148,7 @@ Use "rolecule [command] --help" for more information about a command.
 - Support using custom verifier command/args/env vars from rolecule.yml
 - Test converging with puppet apply
 - Implement `rolecule init` to generate a rolecule.yml file (use current directory structure to determine configuration management provisioner)
+- Implement `rolecule list` subcommand to list all running containers
 - Write some tests :/
 - Document what is required for a container image
 - Test with docker on Linux
