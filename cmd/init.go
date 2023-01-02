@@ -1,5 +1,5 @@
 /*
-Copyright © 2022 David Wooldridge <zombie@zombix.org>
+Copyright © 2023 David Wooldridge <zombie@zombix.org>
 */
 package cmd
 

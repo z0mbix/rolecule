@@ -35,7 +35,7 @@ func (i *Instance) Create() (string, error) {
 	}
 
 	if i.Arch != "" {
-		instanceArgs = append(instanceArgs, "--arch", i.Arch)
+		instanceArgs = append(instanceArgs, "--platform", fmt.Sprintf("linux/%s", i.Arch))
 	}
 
 	instanceArgs = append(instanceArgs, "--name", i.GetContainerName())

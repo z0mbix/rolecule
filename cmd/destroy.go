@@ -1,5 +1,5 @@
 /*
-Copyright © 2022 David Wooldridge <zombie@zombix.org>
+Copyright © 2023 David Wooldridge <zombie@zombix.org>
 */
 package cmd
 
@@ -19,13 +19,16 @@ var destroyCmd = &cobra.Command{
 	Short:   "Destroy everything",
 	Long:    `Destroy the containers created for these tests`,
 
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.Get()
 		if err != nil {
 			log.Fatal(err.Error())
 		}
 
-		return destroy(cfg)
+		err = destroy(cfg)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
 	},
 }
 

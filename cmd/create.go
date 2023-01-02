@@ -1,5 +1,5 @@
 /*
-Copyright © 2022 David Wooldridge <zombie@zombix.org>
+Copyright © 2023 David Wooldridge <zombie@zombix.org>
 */
 package cmd
 
@@ -20,14 +20,16 @@ var createCmd = &cobra.Command{
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command.`,
 
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.Get()
 		if err != nil {
 			log.Fatal(err.Error())
 		}
 
-		return create(cfg)
-
+		err = create(cfg)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
 	},
 }
 

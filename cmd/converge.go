@@ -19,13 +19,16 @@ var convergeCmd = &cobra.Command{
 	Use:     "converge",
 	Aliases: []string{"co"},
 	Short:   "Run your configuration management tool to converge the configuration",
-	RunE: func(cmd *cobra.Command, args []string) error {
+	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.Get()
 		if err != nil {
-			return err
+			log.Fatal(err.Error())
 		}
 
-		return converge(cfg)
+		err = converge(cfg)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
 	},
 }
 

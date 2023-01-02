@@ -1,11 +1,11 @@
 ---
 engine:
-  # name: docker
-  name: podman
+  name: docker
+  # name: podman
 
 containers:
   - name: rockylinux-systemd-9.1-amd64
-    image: localhost/rockylinux-systemd:9.1
+    image: rockylinux-systemd:9.1
     arch: amd64
   # - name: rockylinux-systemd-9.1-arm64
   #   image: localhost/rockylinux-systemd:9.1
@@ -21,9 +21,9 @@ containers:
 provisioner:
   name: ansible
   # command: ansible-playbook --connection local --inventory localhost,
-  env:
-    ANSIBLE_ROLES_PATH: .
-    ANSIBLE_NOCOWS: True
+  # env:
+  #   ANSIBLE_ROLES_PATH: .
+  #   ANSIBLE_NOCOWS: True
 
 verifier:
   name: goss

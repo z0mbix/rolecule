@@ -2,10 +2,11 @@
 
 ## Description
 
-`rolecule` is a simple tool to help you test your configuration management code
-works as you expect, by creating systemd enabled containers with either docker or podman, then converging them with your configured provisioner (ansible by default).
+`rolecule` is a simple tool to help you test your configuration management code works as you expect, by creating systemd enabled containers with either docker or podman, then converging them with your configured provisioner (ansible by default). We're basically treating containers as mini VMs.
 
 Once converged, it will run a verifier to test it all. Currently, then only supported provisioner is [goss](https://github.com/goss-org/goss), [testinfra](https://testinfra.readthedocs.io/) will be added soon.
+
+This should speed up testing your roles if you're using virtual machines.
 
 ## Usage
 
@@ -23,10 +24,10 @@ containers:
 
 provisioner:
   name: ansible
-  command: ansible-playbook --connection local --inventory localhost,
-  env:
-    ANSIBLE_ROLES_PATH: .
-    ANSIBLE_NOCOWS: True
+  # command: ansible-playbook --connection local --inventory localhost,
+  # env:
+  #   ANSIBLE_ROLES_PATH: .
+  #   ANSIBLE_NOCOWS: True
 
 verifier:
   name: goss
@@ -135,6 +136,24 @@ Flags:
   -h, --help    help for rolecule
 
 Use "rolecule [command] --help" for more information about a command.
+```
+
+### FAQ
+
+**How do I get this working on macOS?**
+
+You'll need to make sure you create a podman machine with your home directory mounted for volume mounts to work, e.g.:
+
+```
+» podman machine init --now --rootful -v $HOME:$HOME
+```
+
+**How do I create a suitable container image for this?**
+
+You can use the `Containerfile`/`Dockerfile` files in the testing directory to build suitable images:
+
+```
+» podman build -t rockylinux-systemd:9.1 -f testing/rockylinux-9.1-systemd.Containerfile .
 ```
 
 ## TODO
