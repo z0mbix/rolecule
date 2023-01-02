@@ -140,6 +140,7 @@ Use "rolecule [command] --help" for more information about a command.
 
 - ~~Test on Mac~~
 - ~~Test on Linux~~
+- Support installing ansible collections
 - Support testinfra verifier
 - Support scenarios, making it possible to test a role with different tags
 - Support using custom provisioner command/args/env vars from rolecule.yml
