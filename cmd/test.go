@@ -45,5 +45,7 @@ against them, test them with your verifier of choice, then destroy everything.`,
 		if err != nil {
 			log.Fatal(err.Error())
 		}
+
+		log.Info("complete")
 	},
 }
