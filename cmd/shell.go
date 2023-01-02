@@ -11,11 +11,11 @@ import (
 	"github.com/z0mbix/rolecule/pkg/config"
 )
 
-var containerName string
+var shellContainerName string
 
 func init() {
 	rootCmd.AddCommand(shellCmd)
-	shellCmd.Flags().StringVarP(&containerName, "name", "n", "", "Login to a specific container")
+	shellCmd.Flags().StringVarP(&shellContainerName, "name", "n", "", "Login to a specific container")
 }
 
 var shellCmd = &cobra.Command{
@@ -35,15 +35,24 @@ var shellCmd = &cobra.Command{
 	},
 }
 
-// TODO: how to support using the containerName when passed as a flag?
 func shell(cfg *config.Config) error {
 	if len(cfg.Instances) > 1 {
-		return fmt.Errorf("more than one container, you need to specify which container with -n [container name]")
-	}
-
-	err := cfg.Instances[0].Shell()
-	if err != nil {
-		return err
+		if shellContainerName == "" {
+			return fmt.Errorf("more than one container, you need to specify which container with -n [container name]")
+		}
+		for _, instance := range cfg.Instances {
+			if instance.Name == shellContainerName {
+				err := instance.Shell()
+				if err != nil {
+					return err
+				}
+			}
+		}
+	} else {
+		err := cfg.Instances[0].Shell()
+		if err != nil {
+			return err
+		}
 	}
 
 	return nil
