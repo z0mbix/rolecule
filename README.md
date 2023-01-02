@@ -159,3 +159,4 @@ Use "rolecule [command] --help" for more information about a command.
 - Should we support Chef? (No real need as they have test-kitchen?)
 - Should we support InSpec? (I think probably yes, as it's pretty awesome)
 - Should we run testinfra/inspec inside the container or from outside? (Nice to not need all the python/ruby environments/packages on the host)
+- Should we support Windows? (Yeah...probably)
