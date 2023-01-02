@@ -55,7 +55,7 @@ type Config struct {
 }
 
 func Get() (*Config, error) {
-	// use the config file 'rolecule.yml|rolecule.yaml' in the current directory
+	// config file is 'rolecule.yml|rolecule.yaml' in the current directory
 	viper.SetEnvPrefix(strings.ToUpper(AppName))
 	viper.SetConfigName(AppName)
 	viper.SetConfigType("yaml")
@@ -126,4 +126,10 @@ func Get() (*Config, error) {
 		Engine:      engine,
 		Instances:   instances,
 	}, nil
+}
+
+// Create creates a rolecule.yml file in the current directory
+func Create(engine, provisioner, verifier string) error {
+	log.Debugf("creating config with: %s/%s/%s", engine, provisioner, verifier)
+	return nil
 }

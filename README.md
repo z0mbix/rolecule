@@ -3,7 +3,7 @@
 ## Description
 
 `rolecule` is a simple tool to help you test your configuration management code
-works as you expect, but creating systemd enabled containers with either docker or podman, then converging them with your configured provisioner (ansible by default).
+works as you expect, by creating systemd enabled containers with either docker or podman, then converging them with your configured provisioner (ansible by default).
 
 Once converged, it will run a verifier to test it all. Currently, then only supported provisioner is [goss](https://github.com/goss-org/goss), [testinfra](https://testinfra.readthedocs.io/) will be added soon.
 
