@@ -4,7 +4,10 @@ engine:
   name: podman
 
 containers:
-  - name: rockylinux-systemd-9.1-amd64
+  - name: rockylinux-9.1-amd64
+    image: rockylinux-systemd:9.1
+    arch: amd64
+  - name: rockylinux-9.1-arm64
     image: rockylinux-systemd:9.1
     arch: amd64
   # - name: rockylinux-systemd-9.1-arm64

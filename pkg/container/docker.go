@@ -83,6 +83,7 @@ func (p *DockerEngine) Remove(name string) error {
 		"--force",
 		name,
 	}
+
 	exitCode, _, err := command.Execute(p.Name, args...)
 	if err != nil || exitCode != 0 {
 		return err
@@ -101,6 +102,7 @@ func (p *DockerEngine) Exists(name string) bool {
 		"{{.Name}}",
 		name,
 	}
+
 	exitCode, output, err := command.Execute(p.Name, args...)
 	if err != nil || exitCode != 0 {
 		return false
@@ -111,4 +113,23 @@ func (p *DockerEngine) Exists(name string) bool {
 	}
 
 	return false
+}
+
+func (p *DockerEngine) List(name string) (string, error) {
+	args := []string{
+		"ps",
+		"--filter",
+		fmt.Sprintf("name=%s", name),
+	}
+
+	exitCode, output, err := command.Execute(p.Name, args...)
+	if err != nil || exitCode != 0 {
+		return "", err
+	}
+
+	if output == name {
+		return "", err
+	}
+
+	return output, nil
 }

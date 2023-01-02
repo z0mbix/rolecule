@@ -4,7 +4,7 @@
 
 `rolecule` is a simple tool to help you test your configuration management code works as you expect, by creating systemd enabled containers with either docker or podman, then converging them with your configured provisioner (ansible by default). We're basically treating containers as mini VMs.
 
-Once converged, it will run a verifier to test it all. Currently, then only supported provisioner is [goss](https://github.com/goss-org/goss), [testinfra](https://testinfra.readthedocs.io/) will be added soon.
+Once converged, it will run a verifier to test it all. Currently, the only supported provisioner is [goss](https://github.com/goss-org/goss), [testinfra](https://testinfra.readthedocs.io/) will be added soon.
 
 This should speed up testing your roles if you're using virtual machines.
 
@@ -167,7 +167,7 @@ You can use the `Containerfile`/`Dockerfile` files in the testing directory to b
 - Support using custom verifier command/args/env vars from rolecule.yml
 - Test converging with puppet apply
 - Implement `rolecule init` to generate a rolecule.yml file (use current directory structure to determine configuration management provisioner)
-- Implement `rolecule list` subcommand to list all running containers
+- ~~Implement `rolecule list` subcommand to list all running containers~~
 - Write some tests :/
 - Document what is required for a container image
 - Test with docker on Linux

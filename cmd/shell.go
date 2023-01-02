@@ -15,15 +15,13 @@ var containerName string
 
 func init() {
 	rootCmd.AddCommand(shellCmd)
-	shellCmd.Flags().StringVarP(&containerName, "container-name", "n", "", "Login to a specific instance")
+	shellCmd.Flags().StringVarP(&containerName, "name", "n", "", "Login to a specific container")
 }
 
 var shellCmd = &cobra.Command{
 	Use:     "shell",
 	Aliases: []string{"sh", "login"},
-	Short:   "get a shell in a container",
-	// Long: `to quickly create a Cobra application.`,
-
+	Short:   "Open a shell in a container",
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.Get()
 		if err != nil {

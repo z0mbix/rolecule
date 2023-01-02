@@ -23,11 +23,8 @@ func init() {
 }
 
 var initCmd = &cobra.Command{
-	Use:     "init",
-	Aliases: []string{"sh", "login"},
-	Short:   "initialise the project with a nice new rolecule.yml file",
-	// Long: `to quickly create a Cobra application.`,
-
+	Use:   "init",
+	Short: "Initialise the project with a nice new rolecule.yml file",
 	Run: func(cmd *cobra.Command, args []string) {
 		err := config.Create(engineName, provisionerName, verifierName)
 		if err != nil {

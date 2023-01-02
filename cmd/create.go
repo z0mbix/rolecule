@@ -17,9 +17,6 @@ var createCmd = &cobra.Command{
 	Use:     "create",
 	Aliases: []string{"cr"},
 	Short:   "Create a new container(s) to test the role in",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command.`,
-
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.Get()
 		if err != nil {
@@ -35,12 +32,12 @@ and usage of using your command.`,
 
 func create(cfg *config.Config) error {
 	for _, instance := range cfg.Instances {
-		log.Infof("creating %s container: %s", instance.Engine, instance.GetContainerName())
-		if instance.Engine.Exists(instance.GetContainerName()) {
-			log.Errorf("container already exists!")
+		if instance.Engine.Exists(instance.Name) {
+			log.Errorf("container %s already exists!", instance.Name)
 			continue
 		}
 
+		log.Infof("creating container %s with %s", instance.Name, instance.Engine)
 		output, err := instance.Create()
 		if err != nil {
 			log.Error(err.Error())

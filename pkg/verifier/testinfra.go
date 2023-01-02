@@ -1,5 +1,7 @@
 package verifier
 
+import "fmt"
+
 type TestInfraVerifier struct {
 	Name    string
 	Command string
@@ -7,6 +9,21 @@ type TestInfraVerifier struct {
 	Env     map[string]string
 }
 
-func (a *TestInfraVerifier) GetCommand() (map[string]string, string, []string) {
-	return a.Env, a.Command, a.Args
+func (v *TestInfraVerifier) String() string {
+	return v.Name
+}
+
+func (v *TestInfraVerifier) GetCommand() (map[string]string, string, []string) {
+	return v.Env, v.Command, v.Args
+}
+
+// TODO: how to get socket and container name?
+var defaultTestInfraConfig = &TestInfraVerifier{
+	Name:    "testinfra",
+	Command: "py.test",
+	Args: []string{
+		"-vv",
+		"--hosts",
+		fmt.Sprintf("podman//foobar"),
+	},
 }

@@ -7,11 +7,12 @@ import (
 )
 
 type Engine interface {
-	Run(string, []string) (string, error)
 	Exec(string, map[string]string, string, []string) (string, error)
 	Exists(string) bool
-	Shell(string) error
+	List(string) (string, error)
 	Remove(string) error
+	Run(string, []string) (string, error)
+	Shell(string) error
 	String() string
 }
 

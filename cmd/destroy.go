@@ -17,8 +17,6 @@ var destroyCmd = &cobra.Command{
 	Use:     "destroy",
 	Aliases: []string{"rm"},
 	Short:   "Destroy everything",
-	Long:    `Destroy the containers created for these tests`,
-
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.Get()
 		if err != nil {
@@ -34,7 +32,7 @@ var destroyCmd = &cobra.Command{
 
 func destroy(cfg *config.Config) error {
 	for _, instance := range cfg.Instances {
-		log.Infof("destroying container: %s", instance.GetContainerName())
+		log.Infof("destroying container %s", instance.Name)
 		err := instance.Destroy()
 		if err != nil {
 			return err

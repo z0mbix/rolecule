@@ -4,6 +4,7 @@ import "fmt"
 
 type Provisioner interface {
 	GetCommand() (map[string]string, string, []string)
+	String() string
 }
 
 func NewProvisioner(name string) (Provisioner, error) {

@@ -19,8 +19,6 @@ var verifyCmd = &cobra.Command{
 	Use:     "verify",
 	Aliases: []string{"v"},
 	Short:   "verify your container",
-	// Long: `to quickly create a Cobra application.`,
-
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.Get()
 		if err != nil {
@@ -36,7 +34,7 @@ var verifyCmd = &cobra.Command{
 
 func verify(cfg *config.Config) error {
 	for _, instance := range cfg.Instances {
-		log.Infof("verifying container: %s", instance.GetContainerName())
+		log.Infof("verifying container %s with %s", instance.Name, cfg.Verifier)
 		output, err := instance.Verify()
 		if err != nil {
 			return fmt.Errorf("%w - %s", err, output)

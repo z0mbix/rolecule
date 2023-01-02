@@ -102,10 +102,12 @@ func Get() (*Config, error) {
 		return nil, err
 	}
 
+	roleName := filepath.Base(cwd)
+
 	var instances container.Instances
 	for _, i := range configValues.Containers {
 		instanceConfig := container.Instance{
-			Name:        i.Name,
+			Name:        GenerateContainerName(i.Name, roleName),
 			Image:       i.Image,
 			Arch:        i.Arch,
 			Args:        i.Args,
@@ -119,13 +121,19 @@ func Get() (*Config, error) {
 	}
 
 	return &Config{
-		RoleName:    filepath.Base(cwd),
+		RoleName:    roleName,
 		WorkDir:     cwd,
 		Provisioner: provisioner,
 		Verifier:    verifier,
 		Engine:      engine,
 		Instances:   instances,
 	}, nil
+}
+
+// GenerateContainerName generates a container name so it's unique and useful
+func GenerateContainerName(name, roleName string) string {
+	replacer := strings.NewReplacer("_", "-", " ", "-", ":", "-")
+	return fmt.Sprintf("%s-%s-%s", AppName, roleName, replacer.Replace(name))
 }
 
 // Create creates a rolecule.yml file in the current directory

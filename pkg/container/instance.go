@@ -2,7 +2,6 @@ package container
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/apex/log"
 	"github.com/z0mbix/rolecule/pkg/provisioner"
@@ -38,7 +37,7 @@ func (i *Instance) Create() (string, error) {
 		instanceArgs = append(instanceArgs, "--platform", fmt.Sprintf("linux/%s", i.Arch))
 	}
 
-	instanceArgs = append(instanceArgs, "--name", i.GetContainerName())
+	instanceArgs = append(instanceArgs, "--name", i.Name)
 
 	args := append(instanceArgs, i.Args...)
 
@@ -53,25 +52,19 @@ func (i *Instance) Create() (string, error) {
 func (i *Instance) Converge() (string, error) {
 	env, cmd, args := i.Provisioner.GetCommand()
 	log.Debugf("%s -> %v", cmd, args)
-	return i.Exec(i.GetContainerName(), env, cmd, args)
+	return i.Exec(i.Name, env, cmd, args)
 }
 
 func (i *Instance) Verify() (string, error) {
 	env, cmd, args := i.Verifier.GetCommand()
 	log.Debugf("%s -> %v", cmd, args)
-	return i.Exec(i.GetContainerName(), env, cmd, args)
+	return i.Exec(i.Name, env, cmd, args)
 }
 
 func (i *Instance) Shell() error {
-	return i.Engine.Shell(i.GetContainerName())
+	return i.Engine.Shell(i.Name)
 }
 
 func (i *Instance) Destroy() error {
-	return i.Remove(i.GetContainerName())
-}
-
-func (i *Instance) GetContainerName() string {
-	replacer := strings.NewReplacer("_", "-", " ", "-")
-	containerName := fmt.Sprintf("rolecule-%s", replacer.Replace(i.Name))
-	return containerName
+	return i.Remove(i.Name)
 }

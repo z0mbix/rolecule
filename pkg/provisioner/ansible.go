@@ -7,6 +7,10 @@ type AnsibleProvisioner struct {
 	Env     map[string]string
 }
 
+func (a *AnsibleProvisioner) String() string {
+	return a.Name
+}
+
 func (a *AnsibleProvisioner) GetCommand() (map[string]string, string, []string) {
 	return a.Env, a.Command, a.Args
 }
