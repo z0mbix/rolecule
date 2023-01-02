@@ -107,7 +107,7 @@ func Get() (*Config, error) {
 	var instances container.Instances
 	for _, i := range configValues.Containers {
 		instanceConfig := container.Instance{
-			Name:        GenerateContainerName(i.Name, roleName),
+			Name:        generateContainerName(i.Name, roleName),
 			Image:       i.Image,
 			Arch:        i.Arch,
 			Args:        i.Args,
@@ -130,8 +130,7 @@ func Get() (*Config, error) {
 	}, nil
 }
 
-// GenerateContainerName generates a container name so it's unique and useful
-func GenerateContainerName(name, roleName string) string {
+func generateContainerName(name, roleName string) string {
 	replacer := strings.NewReplacer("_", "-", " ", "-", ":", "-")
 	return fmt.Sprintf("%s-%s-%s", AppName, roleName, replacer.Replace(name))
 }

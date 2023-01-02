@@ -18,7 +18,7 @@ func init() {
 var verifyCmd = &cobra.Command{
 	Use:     "verify",
 	Aliases: []string{"v"},
-	Short:   "verify your container",
+	Short:   "Verify your containers are configured how you expect",
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.Get()
 		if err != nil {

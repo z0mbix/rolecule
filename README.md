@@ -137,6 +137,36 @@ Flags:
 
 Use "rolecule [command] --help" for more information about a command.
 ```
+## Individual sub command examples
+
+Create the containers:
+```
+» rolecule create
+   • creating container rolecule-simple-rockylinux-9.1-amd64 with podman
+   • 117840d9d34cae498f2960ef5790287ddec4e2ffa6cc2f81f8602523b988f5c7
+   • creating container rolecule-simple-rockylinux-9.1-arm64 with podman
+   • 1ce4cb2cabbd4632167ebc93d17fcbd029eb1c8a8f93fec062eb330b14cd44e6
+```
+
+List all containers:
+```
+» rolecule list
+CONTAINER ID  IMAGE                             COMMAND         CREATED        STATUS            PORTS       NAMES
+117840d9d34c  localhost/rockylinux-systemd:9.1  /usr/sbin/init  6 minutes ago  Up 6 minutes ago              rolecule-simple-rockylinux-9.1-amd64
+1ce4cb2cabbd  localhost/rockylinux-systemd:9.1  /usr/sbin/init  6 minutes ago  Up 6 minutes ago              rolecule-simple-rockylinux-9.1-arm64
+```
+
+Open a shell:
+```
+» rolecule shell -n rolecule-simple-rockylinux-9.1-amd64
+[root@117840d9d34c src]#
+```
+
+```
+» rolecule destroy
+   • destroying container rolecule-simple-rockylinux-9.1-amd64
+   • destroying container rolecule-simple-rockylinux-9.1-arm64
+```
 
 ### FAQ
 
@@ -172,9 +202,14 @@ You can use the `Containerfile`/`Dockerfile` files in the testing directory to b
 - Document what is required for a container image
 - Test with docker on Linux
 - Test with docker desktop on Mac
+- Test with podman desktop on Windows
+- Test with docker desktop on Windows
+- Add goreleaser config to release to Github Releases
+- Add Github actions workflow to build, test and release
 
 ## Questions
 
+- Should we add colour support to output?
 - Should we support Chef? (No real need as they have test-kitchen?)
 - Should we support InSpec? (I think probably yes, as it's pretty awesome)
 - Should we run testinfra/inspec inside the container or from outside? (Nice to not need all the python/ruby environments/packages on the host)
