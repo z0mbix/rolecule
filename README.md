@@ -179,3 +179,4 @@ You can use the `Containerfile`/`Dockerfile` files in the testing directory to b
 - Should we support InSpec? (I think probably yes, as it's pretty awesome)
 - Should we run testinfra/inspec inside the container or from outside? (Nice to not need all the python/ruby environments/packages on the host)
 - Should we support Windows? (Yeah...probably)
+- Should we support other shells than bash? Not sure we need to test with alpine as most people don't run their servers on alpine, this ain't Kubernetes

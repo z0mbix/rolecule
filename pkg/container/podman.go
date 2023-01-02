@@ -55,8 +55,6 @@ func (p *PodmanEngine) Exec(containerName string, envVars map[string]string, cmd
 }
 
 func (p *PodmanEngine) Shell(containerName string) error {
-	log.Debug("executing command in container")
-
 	shell := "bash"
 
 	args := []string{
