@@ -36,6 +36,7 @@ var verifyCmd = &cobra.Command{
 
 func verify(cfg *config.Config) error {
 	for _, instance := range cfg.Instances {
+		log.Infof("verifying container: %s", instance.GetContainerName())
 		output, err := instance.Verify()
 		if err != nil {
 			return fmt.Errorf("%w - %s", err, output)
