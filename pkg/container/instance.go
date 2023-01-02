@@ -26,6 +26,7 @@ func (i *Instance) Create() (string, error) {
 	workDir := "/src"
 	instanceArgs := []string{
 		"run",
+		"--privileged",
 		"--rm",
 		"--detach",
 		"--volume", "/sys/fs/cgroup:/sys/fs/cgroup:ro",
