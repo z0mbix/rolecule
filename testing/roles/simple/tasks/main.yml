@@ -1,0 +1,36 @@
+---
+- name: package
+  ansible.builtin.package:
+    name: git
+  tags:
+    - build
+
+- name: template
+  ansible.builtin.template:
+    src: test1.txt.j2
+    dest: /tmp/test1.txt
+    owner: root
+    group: root
+    mode: 0644
+  tags:
+    - provision
+
+- name: file
+  ansible.builtin.copy:
+    src: test2.txt
+    dest: /tmp/test2.txt
+    owner: root
+    group: root
+    mode: 0640
+  tags:
+    - provision
+
+- name: directory
+  ansible.builtin.file:
+    path: /tmp/simple-directory
+    state: directory
+    owner: root
+    group: root
+    mode: 0750
+  tags:
+    - provision
