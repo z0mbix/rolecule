@@ -1,0 +1,28 @@
+file:
+  /tmp/simple-directory:
+    exists: true
+    mode: "0750"
+    size: 40
+    owner: root
+    group: root
+    filetype: directory
+    contains: []
+  /tmp/test1.txt:
+    exists: true
+    mode: "0644"
+    size: 6
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+  /tmp/test2.txt:
+    exists: true
+    mode: "0640"
+    size: 6
+    owner: root
+    group: root
+    filetype: file
+    contains: []
+package:
+  git:
+    installed: true

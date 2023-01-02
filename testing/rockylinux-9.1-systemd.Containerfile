@@ -10,7 +10,8 @@ RUN dnf install -y systemd systemd-libs util-linux ansible-core procps-ng && \
   rm -f /lib/systemd/system/anaconda.target.wants/*;
 
 # Install goss (https://github.com/goss-org/goss)
-# RUN curl -fsSL https://goss.rocks/install | sh
+RUN curl -sSL https://github.com/goss-org/goss/releases/latest/download/goss-linux-amd64 -o /usr/local/bin/goss && \
+  chmod +rx /usr/local/bin/goss
 
 VOLUME [ "/sys/fs/cgroup" ]
 CMD ["/usr/sbin/init"]

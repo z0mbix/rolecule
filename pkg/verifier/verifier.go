@@ -12,7 +12,11 @@ func NewVerifier(name string) (Verifier, error) {
 			Name:    "goss",
 			Command: "goss",
 			Args: []string{
+				"--gossfile",
+				"tests/goss.yaml",
 				"validate",
+				"--format",
+				"tap",
 			},
 		}, nil
 	}
