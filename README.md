@@ -14,7 +14,6 @@ First, you need to create a simple `rolecule.yml` file in the root of your role/
 
 ```yaml
 ---
----
 engine:
   name: podman
 
