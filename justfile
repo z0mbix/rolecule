@@ -23,7 +23,7 @@ tags:
 
 # Run unit tests
 test:
-    go test -v ./...
+    go test ./...
 
 help:
     @just --list --list-prefix '  ❯ '

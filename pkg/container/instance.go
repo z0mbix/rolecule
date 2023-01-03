@@ -8,6 +8,13 @@ import (
 	"github.com/z0mbix/rolecule/pkg/verifier"
 )
 
+type InstanceConfig struct {
+	Name  string   `mapstructure:"name"`
+	Image string   `mapstructure:"image"`
+	Arch  string   `mapstructure:"arch"`
+	Args  []string `mapstructure:"args"`
+}
+
 type Instances []Instance
 
 type Instance struct {

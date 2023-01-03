@@ -15,22 +15,11 @@ import (
 
 var AppName = "rolecule"
 
-type engineConfig struct {
-	Name string `mapstructure:"name"`
-}
-
-type containerConfig struct {
-	Name  string   `mapstructure:"name"`
-	Image string   `mapstructure:"image"`
-	Arch  string   `mapstructure:"arch"`
-	Args  []string `mapstructure:"args"`
-}
-
 type configFile struct {
-	Engine      engineConfig       `mapstructure:"engine"`
-	Containers  []containerConfig  `mapstructure:"containers"`
-	Provisioner provisioner.Config `mapstructure:"provisioner"`
-	Verifier    verifier.Config    `mapstructure:"verifier"`
+	Engine      container.EngineConfig     `mapstructure:"engine"`
+	Containers  []container.InstanceConfig `mapstructure:"containers"`
+	Provisioner provisioner.Config         `mapstructure:"provisioner"`
+	Verifier    verifier.Config            `mapstructure:"verifier"`
 }
 
 type Config struct {

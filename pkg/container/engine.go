@@ -16,6 +16,10 @@ type Engine interface {
 	String() string
 }
 
+type EngineConfig struct {
+	Name string `mapstructure:"name"`
+}
+
 func NewEngine(name string) (Engine, error) {
 	if !utils.CommandExists(name) {
 		return nil, fmt.Errorf("container engine '%s' not found in PATH", name)
