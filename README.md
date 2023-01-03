@@ -32,7 +32,7 @@ verifier:
 
 Then, from the root of your role (e.g. sshd), run `rolecule test`, e.g.:
 
-```
+```text
 » rolecule test
    • creating container rolecule-sshd-rockylinux-9.1 with podman
    • creating container rolecule-sshd-ubuntu-22.04 with podman
@@ -171,8 +171,8 @@ You can use the `Containerfile`/`Dockerfile` files in the testing directory to b
 
 ## TODO
 
-- ~~Test on Mac~~
-- ~~Test on Linux~~
+- ~~Test with podman on Mac~~
+- ~~Test docker on Linux~~
 - Support installing ansible collections
 - Support testinfra verifier
 - Support scenarios, making it possible to test a role with different tags

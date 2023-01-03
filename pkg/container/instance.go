@@ -65,6 +65,10 @@ func (i *Instance) Shell() error {
 	return i.Engine.Shell(i.Name)
 }
 
+func (i *Instance) Exists() bool {
+	return i.Engine.Exists(i.Name)
+}
+
 func (i *Instance) Destroy() error {
 	return i.Remove(i.Name)
 }

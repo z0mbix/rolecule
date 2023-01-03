@@ -36,6 +36,9 @@ var shellCmd = &cobra.Command{
 }
 
 func shell(cfg *config.Config) error {
+	shellInstance := cfg.Instances[0]
+
+	// If we have more than one container configured, find it
 	if len(cfg.Instances) > 1 {
 		if shellContainerName == "" {
 			var instanceNames []string
@@ -44,19 +47,21 @@ func shell(cfg *config.Config) error {
 			}
 			return fmt.Errorf("more than one container, you need to specify which container with -n %v", instanceNames)
 		}
+
 		for _, instance := range cfg.Instances {
 			if instance.Name == shellContainerName {
-				err := instance.Shell()
-				if err != nil {
-					return err
-				}
+				shellInstance = instance
 			}
 		}
-	} else {
-		err := cfg.Instances[0].Shell()
-		if err != nil {
-			return err
-		}
+	}
+
+	if !shellInstance.Exists() {
+		return fmt.Errorf("container does not exist yet, you need to create it first")
+	}
+
+	err := shellInstance.Shell()
+	if err != nil {
+		return err
 	}
 
 	return nil
