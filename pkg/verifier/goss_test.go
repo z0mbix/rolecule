@@ -43,8 +43,27 @@ func TestGossVerifier_GetCommand(t *testing.T) {
 				"--gossfile",
 				"tests/goss.yaml",
 				"validate",
+			},
+		},
+		{
+			name: "goss-custom",
+			v: &GossVerifier{
+				Name:     "goss",
+				Command:  "goss",
+				TestFile: "gossfile.yaml",
+				ExtraArgs: []string{
+					"--format",
+					"json",
+				},
+			},
+			want:  nil,
+			want1: "goss",
+			want2: []string{
+				"--gossfile",
+				"tests/gossfile.yaml",
+				"validate",
 				"--format",
-				"tap",
+				"json",
 			},
 		},
 	}

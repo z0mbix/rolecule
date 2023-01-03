@@ -1,10 +1,13 @@
 package verifier
 
+import "path/filepath"
+
 type GossVerifier struct {
-	Name    string
-	Command string
-	Args    []string
-	Env     map[string]string
+	Name      string
+	Command   string
+	Args      []string
+	ExtraArgs []string
+	TestFile  string
 }
 
 func (v *GossVerifier) String() string {
@@ -12,17 +15,15 @@ func (v *GossVerifier) String() string {
 }
 
 func (v *GossVerifier) GetCommand() (map[string]string, string, []string) {
-	return v.Env, v.Command, v.Args
+	// TODO: how to handle getting the gossfile path better, and support scenarios?
+	gossfilePath := filepath.Join("tests", v.TestFile)
+	args := []string{"--gossfile", gossfilePath, "validate"}
+	args = append(args, v.ExtraArgs...)
+	return nil, v.Command, args
 }
 
 var defaultGossConfig = &GossVerifier{
-	Name:    "goss",
-	Command: "goss",
-	Args: []string{
-		"--gossfile",
-		"tests/goss.yaml",
-		"validate",
-		"--format",
-		"tap",
-	},
+	Name:     "goss",
+	Command:  "goss",
+	TestFile: "goss.yaml",
 }

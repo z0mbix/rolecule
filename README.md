@@ -55,33 +55,17 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=5    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 
    • verifying container rolecule-sshd-rockylinux-9.1 with goss
-1..12
-ok 1 - File: /etc/ssh/sshd_config: exists: matches expectation: [true]
-ok 2 - File: /etc/ssh/sshd_config: mode: matches expectation: ["0600"]
-ok 3 - File: /etc/ssh/sshd_config: owner: matches expectation: ["root"]
-ok 4 - File: /etc/ssh/sshd_config: group: matches expectation: ["root"]
-ok 5 - File: /etc/ssh/sshd_config: filetype: matches expectation: ["file"]
-ok 6 - File: /etc/ssh/sshd_config: contains: all expectations found: [Port 22, AddressFamily any, ListenAddress 0.0.0.0, SyslogFacility AUTH, LogLevel INFO, PermitRootLogin no, PubkeyAuthentication yes, AuthorizedKeysFile	.ssh/authorized_keys, Subsystem	sftp	/usr/libexec/openssh/sftp-server]
-ok 7 - User: sshd: exists: matches expectation: [true]
-ok 8 - Process: sshd: running: matches expectation: [true]
-ok 9 - Port: tcp:22: listening: matches expectation: [true]
-ok 10 - Port: tcp:22: ip: matches expectation: [["0.0.0.0"]]
-ok 11 - Service: sshd: enabled: matches expectation: [true]
-ok 12 - Service: sshd: running: matches expectation: [true]
+............
+
+Total Duration: 0.016s
+Count: 12, Failed: 0, Skipped: 0
+
    • verifying container rolecule-sshd-ubuntu-22.04 with goss
-1..12
-ok 1 - File: /etc/ssh/sshd_config: exists: matches expectation: [true]
-ok 2 - File: /etc/ssh/sshd_config: mode: matches expectation: ["0600"]
-ok 3 - File: /etc/ssh/sshd_config: owner: matches expectation: ["root"]
-ok 4 - File: /etc/ssh/sshd_config: group: matches expectation: ["root"]
-ok 5 - File: /etc/ssh/sshd_config: filetype: matches expectation: ["file"]
-ok 6 - File: /etc/ssh/sshd_config: contains: all expectations found: [Port 22, AddressFamily any, ListenAddress 0.0.0.0, SyslogFacility AUTH, LogLevel INFO, PermitRootLogin no, PubkeyAuthentication yes, AuthorizedKeysFile	.ssh/authorized_keys, Subsystem	sftp	/usr/libexec/openssh/sftp-server]
-ok 7 - User: sshd: exists: matches expectation: [true]
-ok 8 - Process: sshd: running: matches expectation: [true]
-ok 9 - Port: tcp:22: listening: matches expectation: [true]
-ok 10 - Port: tcp:22: ip: matches expectation: [["0.0.0.0"]]
-ok 11 - Service: sshd: enabled: matches expectation: [true]
-ok 12 - Service: sshd: running: matches expectation: [true]
+............
+
+Total Duration: 0.015s
+Count: 12, Failed: 0, Skipped: 0
+
    • destroying container rolecule-sshd-rockylinux-9.1
    • destroying container rolecule-sshd-ubuntu-22.04
    • complete
@@ -151,6 +135,8 @@ Destroy the containers:
    • destroying container rolecule-sshd-ubuntu-22.04
 ```
 
+## Provisioners
+
 ### Ansible
 
 The default for the ansible provisioner is the equivalent to setting the following in the `rolecule.yml` config file:
@@ -191,6 +177,42 @@ provisioner:
     - --verbose
 ```
 
+## Verifiers
+
+### Goss
+
+The default goss configuration when you only specify the name, if equivalent to this:
+
+```yaml
+verifier:
+  name: goss
+  testfile: goss.yaml
+  extra_args: []
+```
+
+This will execute:
+
+```text
+goss --gossfile tests/goss.yaml validate
+```
+
+If you want to customise how goss validate is executed, you can change the gossfile and add extra arguments to the validate subcommand, e.g. with this in your `rolecule.yml`:
+
+```yaml
+verifier:
+  name: goss
+  testfile: goss_tests.yaml
+  extra_args:
+    - --format
+    - tap
+```
+
+It will execute:
+
+```text
+goss --gossfile tests/goss_tests.yaml validate --format tap
+```
+
 ### FAQ
 
 **How do I get this working on macOS?**
@@ -211,11 +233,13 @@ You can use the `Containerfile`/`Dockerfile` files in the testing directory to b
 » podman build -t ubuntu-systemd:22.04 -f testing/ansible/ubuntu-22.04-systemd.Containerfile .
 ```
 
+Docker support is in the works, just proving to be a little tricky `¯\_(ツ)_/¯`
+
 ## TODO
 
 - ~~Test with podman on Mac~~
 - ~~Test docker on Linux~~
-- Make provisioner output unbuffered
+- Make provisioner output **unbuffered**
 - Support installing ansible collections
 - Support testinfra verifier
 - Support scenarios, making it possible to test a role with different tags

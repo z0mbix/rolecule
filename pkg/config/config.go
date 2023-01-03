@@ -26,16 +26,11 @@ type containerConfig struct {
 	Args  []string `mapstructure:"args"`
 }
 
-type verifierConfig struct {
-	Name    string `mapstructure:"name"`
-	Command string `mapstructure:"command"`
-}
-
 type configFile struct {
 	Engine      engineConfig       `mapstructure:"engine"`
 	Containers  []containerConfig  `mapstructure:"containers"`
 	Provisioner provisioner.Config `mapstructure:"provisioner"`
-	Verifier    verifierConfig     `mapstructure:"verifier"`
+	Verifier    verifier.Config    `mapstructure:"verifier"`
 }
 
 type Config struct {
@@ -81,7 +76,7 @@ func Get() (*Config, error) {
 		return nil, err
 	}
 
-	verifier, err := verifier.NewVerifier(configValues.Verifier.Name)
+	verifier, err := verifier.NewVerifier(configValues.Verifier)
 	if err != nil {
 		return nil, err
 	}

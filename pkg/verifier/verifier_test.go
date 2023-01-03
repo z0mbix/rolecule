@@ -7,7 +7,7 @@ import (
 
 func TestNewVerifier(t *testing.T) {
 	type args struct {
-		name string
+		config Config
 	}
 	tests := []struct {
 		name    string
@@ -18,7 +18,9 @@ func TestNewVerifier(t *testing.T) {
 		{
 			name: "goss",
 			args: args{
-				name: "goss",
+				config: Config{
+					Name: "goss",
+				},
 			},
 			want:    defaultGossConfig,
 			wantErr: false,
@@ -26,7 +28,9 @@ func TestNewVerifier(t *testing.T) {
 		{
 			name: "testinfra",
 			args: args{
-				name: "testinfra",
+				config: Config{
+					Name: "testinfra",
+				},
 			},
 			want:    defaultTestInfraConfig,
 			wantErr: false,
@@ -34,7 +38,9 @@ func TestNewVerifier(t *testing.T) {
 		{
 			name: "inspec",
 			args: args{
-				name: "inspec",
+				config: Config{
+					Name: "inspec",
+				},
 			},
 			want:    nil,
 			wantErr: true,
@@ -42,7 +48,7 @@ func TestNewVerifier(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewVerifier(tt.args.name)
+			got, err := NewVerifier(tt.args.config)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewVerifier() error = %v, wantErr %v", err, tt.wantErr)
 				return
