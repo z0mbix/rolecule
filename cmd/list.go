@@ -17,7 +17,7 @@ func init() {
 
 var listCmd = &cobra.Command{
 	Use:     "list",
-	Aliases: []string{"v"},
+	Aliases: []string{"l", "ls"},
 	Short:   "List the running containers for this role/module/recipe",
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.Get()
@@ -25,10 +25,7 @@ var listCmd = &cobra.Command{
 			log.Fatal(err.Error())
 		}
 
-		log.Debugf("config: %+v", cfg)
-
-		output := list(cfg)
-		fmt.Println(output)
+		fmt.Println(list(cfg))
 	},
 }
 

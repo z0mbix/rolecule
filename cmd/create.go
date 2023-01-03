@@ -33,7 +33,7 @@ var createCmd = &cobra.Command{
 func create(cfg *config.Config) error {
 	for _, instance := range cfg.Instances {
 		if instance.Engine.Exists(instance.Name) {
-			log.Errorf("container %s already exists!", instance.Name)
+			log.Infof("container %s already exists!", instance.Name)
 			continue
 		}
 
@@ -42,7 +42,7 @@ func create(cfg *config.Config) error {
 		if err != nil {
 			log.Error(err.Error())
 		}
-		log.Info(output)
+		log.Debug(output)
 	}
 
 	return nil
