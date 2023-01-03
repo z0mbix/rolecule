@@ -47,8 +47,6 @@ func TestAnsibleProvisioner_GetCommand(t *testing.T) {
 				"local",
 				"--inventory",
 				"localhost,",
-				"--diff",
-				"--verbose",
 				"tests/playbook.yml",
 			},
 		},

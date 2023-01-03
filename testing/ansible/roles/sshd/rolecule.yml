@@ -10,6 +10,10 @@ containers:
 
 provisioner:
   name: ansible
+  extra_args:
+    - "--diff"
+  env:
+    ANSIBLE_NOCOLOR: True
 
 verifier:
   name: goss

@@ -7,7 +7,7 @@ import (
 
 func TestNewProvisioner(t *testing.T) {
 	type args struct {
-		name string
+		config Config
 	}
 	tests := []struct {
 		name    string
@@ -18,23 +18,19 @@ func TestNewProvisioner(t *testing.T) {
 		{
 			name: "ansible",
 			args: args{
-				name: "ansible",
+				config: Config{
+					Name: "ansible",
+				},
 			},
 			want:    defaultAnsibleConfig,
 			wantErr: false,
 		},
 		{
-			name: "chef",
-			args: args{
-				name: "chef",
-			},
-			want:    nil,
-			wantErr: true,
-		},
-		{
 			name: "puppet",
 			args: args{
-				name: "puppet",
+				config: Config{
+					Name: "puppet",
+				},
 			},
 			want:    nil,
 			wantErr: true,
@@ -42,7 +38,7 @@ func TestNewProvisioner(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewProvisioner(tt.args.name)
+			got, err := NewProvisioner(tt.args.config)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewProvisioner() error = %v, wantErr %v", err, tt.wantErr)
 				return

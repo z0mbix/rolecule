@@ -151,13 +151,53 @@ Destroy the containers:
    • destroying container rolecule-sshd-ubuntu-22.04
 ```
 
+### Ansible
+
+The default for the ansible provisioner is the equivalent to setting the following in the `rolecule.yml` config file:
+
+```yaml
+provisioner:
+  name: ansible
+  command: ansible-playbook
+  playbook: playbook.yml
+  args:
+    - --connection
+    - local
+    - --inventory
+    - localhost,
+    - tests/playbook.yml
+  extra_args: []
+  env:
+    ANSIBLE_ROLES_PATH: .
+    ANSIBLE_NOCOWS: True
+```
+
+If you want to add extra environment variables you can just add them to the `env` map, e.g.:
+
+```yaml
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_NOCOLOR: True
+```
+
+If you want to run a completely different ansible command, you can override the command and all the args with the `command` and `args` keys respectively, but if you just want to add other args like `--diff` or `--verbose`, add them to the `extra_args` array, e.g.:
+
+```yaml
+provisioner:
+  name: ansible
+  extra_args:
+    - --diff
+    - --verbose
+```
+
 ### FAQ
 
 **How do I get this working on macOS?**
 
 You'll need to make sure you create a podman machine with your home directory mounted for volume mounts to work, e.g.:
 
-```
+```text
 » podman machine init --now --rootful -v $HOME:$HOME
 ```
 
@@ -165,18 +205,21 @@ You'll need to make sure you create a podman machine with your home directory mo
 
 You can use the `Containerfile`/`Dockerfile` files in the testing directory to build suitable images:
 
-```
-» podman build -t rockylinux-systemd:9.1 -f testing/rockylinux-9.1-systemd.Containerfile .
+```text
+» podman build -t rockylinux-systemd:9.1 -f testing/ansible/rockylinux-9.1-systemd.Containerfile .
+
+» podman build -t ubuntu-systemd:22.04 -f testing/ansible/ubuntu-22.04-systemd.Containerfile .
 ```
 
 ## TODO
 
 - ~~Test with podman on Mac~~
 - ~~Test docker on Linux~~
+- Make provisioner output unbuffered
 - Support installing ansible collections
 - Support testinfra verifier
 - Support scenarios, making it possible to test a role with different tags
-- Support using custom provisioner command/args/env vars from rolecule.yml
+- ~~Support using custom provisioner command/args/env vars from rolecule.yml~~
 - Support using custom verifier command/args/env vars from rolecule.yml
 - Test converging with puppet apply
 - Implement `rolecule init` to generate a rolecule.yml file (use current directory structure to determine configuration management provisioner)
