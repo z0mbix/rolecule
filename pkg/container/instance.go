@@ -51,13 +51,13 @@ func (i *Instance) Create() (string, error) {
 
 func (i *Instance) Converge() (string, error) {
 	env, cmd, args := i.Provisioner.GetCommand()
-	log.Debugf("%s -> %v", cmd, args)
+	log.Debugf("%s -> %v -> %v", cmd, args, env)
 	return i.Exec(i.Name, env, cmd, args)
 }
 
 func (i *Instance) Verify() (string, error) {
 	env, cmd, args := i.Verifier.GetCommand()
-	log.Debugf("%s -> %v", cmd, args)
+	log.Debugf("%s -> %v -> %v", cmd, args, env)
 	return i.Exec(i.Name, env, cmd, args)
 }
 
