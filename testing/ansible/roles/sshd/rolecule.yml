@@ -1,0 +1,15 @@
+---
+engine:
+  name: podman
+
+containers:
+  - name: rockylinux-9.1
+    image: rockylinux-systemd:9.1
+  - name: ubuntu-22.04
+    image: ubuntu-systemd:22.04
+
+provisioner:
+  name: ansible
+
+verifier:
+  name: goss

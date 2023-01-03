@@ -1,0 +1,32 @@
+port:
+  tcp:22:
+    listening: true
+    ip:
+      - 0.0.0.0
+service:
+  sshd:
+    enabled: true
+    running: true
+user:
+  sshd:
+    exists: true
+process:
+  sshd:
+    running: true
+file:
+  /etc/ssh/sshd_config:
+    exists: true
+    mode: "0600"
+    owner: root
+    group: root
+    filetype: file
+    contains:
+      - "Port 22"
+      - "AddressFamily any"
+      - "ListenAddress 0.0.0.0"
+      - "SyslogFacility AUTH"
+      - "LogLevel INFO"
+      - "PermitRootLogin no"
+      - "PubkeyAuthentication yes"
+      - "AuthorizedKeysFile	.ssh/authorized_keys"
+      - "Subsystem	sftp	/usr/libexec/openssh/sftp-server"

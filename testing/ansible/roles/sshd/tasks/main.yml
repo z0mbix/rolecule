@@ -1,0 +1,26 @@
+---
+- name: package
+  ansible.builtin.package:
+    name: openssh-server
+  tags:
+    - build
+
+- name: configure
+  ansible.builtin.template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - reload sshd
+  tags:
+    - provision
+
+- name: service
+  ansible.builtin.systemd:
+    name: "{{ sshd_service_name }}.service"
+    state: "{{ 'started' if sshd_enabled else 'stopped' }}"
+    enabled: "{{ sshd_enabled }}"
+  tags:
+    - provision

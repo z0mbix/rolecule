@@ -1,0 +1,9 @@
+---
+sshd_port: 22
+sshd_address_family: any
+sshd_listen_address: "0.0.0.0"
+sshd_syslog_facility: AUTH
+sshd_log_level: INFO
+sshd_sftd_server_enabled: yes
+sshd_service_name: sshd
+sshd_enabled: yes

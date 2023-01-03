@@ -1,0 +1,20 @@
+# To modify the system-wide sshd configuration, create a  *.conf  file under
+#  /etc/ssh/sshd_config.d/  which will be automatically included below
+Include /etc/ssh/sshd_config.d/*.conf
+
+Port {{ sshd_port }}
+AddressFamily {{ sshd_address_family }}
+ListenAddress {{ sshd_listen_address }}
+
+# Logging
+SyslogFacility {{ sshd_syslog_facility }}
+LogLevel {{ sshd_log_level }}
+
+# Authentication:
+PermitRootLogin no
+PubkeyAuthentication yes
+AuthorizedKeysFile	.ssh/authorized_keys
+
+{% if sshd_sftd_server_enabled %}
+Subsystem	sftp	/usr/libexec/openssh/sftp-server
+{% endif %}

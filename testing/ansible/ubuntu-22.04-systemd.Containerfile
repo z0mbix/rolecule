@@ -1,14 +1,13 @@
 FROM docker.io/ubuntu:22.04
 
-ENV container docker
-ENV LC_ALL C
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list
 
 # hadolint ignore=DL3008
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends ca-certificates systemd curl cron python3 sudo bash iproute2 net-tools \
+  && apt-get install -y --no-install-recommends ca-certificates systemd curl cron python3 python3-pip bash iproute2 net-tools \
+  && python3 -m pip install ansible ansible-core \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -28,6 +27,10 @@ RUN rm -f /lib/systemd/system/multi-user.target.wants/* \
   /lib/systemd/system/anaconda.target.wants/* \
   /lib/systemd/system/plymouth* \
   /lib/systemd/system/systemd-update-utmp*
+
+# Install goss (https://github.com/goss-org/goss)
+RUN curl -sSL https://github.com/goss-org/goss/releases/latest/download/goss-linux-amd64 -o /usr/local/bin/goss && \
+  chmod +rx /usr/local/bin/goss
 
 WORKDIR /
 RUN systemctl set-default multi-user.target
