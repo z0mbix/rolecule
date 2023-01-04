@@ -46,7 +46,7 @@ func ExecuteWithEnvVars(env map[string]string, name string, args ...string) (int
 
 func Interactive(name string, args ...string) (int, error) {
 	cmd := exec.Command(name, args...)
-	log.Debugf("executing command: %s", cmd)
+	log.Debugf("executing interactive command: %s", cmd)
 	cmd.Stdout = os.Stdout
 	cmd.Stdin = os.Stdin
 	cmd.Stderr = os.Stderr

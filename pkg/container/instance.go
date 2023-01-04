@@ -35,7 +35,12 @@ func (i *Instance) Create() (string, error) {
 		"--privileged",
 		"--rm",
 		"--detach",
-		"--volume", "/sys/fs/cgroup:/sys/fs/cgroup:ro",
+		"--tmpfs", "/tmp",
+		"--tmpfs", "/run",
+		"--tmpfs", "/run/lock",
+		"--tmpfs", "/var/lib/docker",
+		"--cgroupns", "host",
+		"--volume", "/sys/fs/cgroup:/sys/fs/cgroup:rw",
 		"--volume", fmt.Sprintf("%s:%s", i.WorkDir, workDir),
 		"--workdir", workDir,
 	}
@@ -58,13 +63,11 @@ func (i *Instance) Create() (string, error) {
 
 func (i *Instance) Converge() (string, error) {
 	env, cmd, args := i.Provisioner.GetCommand()
-	log.Debugf("%s -> %v -> %v", cmd, args, env)
 	return i.Exec(i.Name, env, cmd, args)
 }
 
 func (i *Instance) Verify() (string, error) {
 	env, cmd, args := i.Verifier.GetCommand()
-	log.Debugf("%s -> %v -> %v", cmd, args, env)
 	return i.Exec(i.Name, env, cmd, args)
 }
 

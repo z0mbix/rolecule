@@ -27,8 +27,6 @@ func (p *PodmanEngine) Run(image string, args []string) (string, error) {
 }
 
 func (p *PodmanEngine) Exec(containerName string, envVars map[string]string, cmd string, args []string) (string, error) {
-	log.Debug("executing command in container")
-
 	execArgs := []string{
 		"exec",
 		"--interactive",
@@ -56,6 +54,7 @@ func (p *PodmanEngine) Exec(containerName string, envVars map[string]string, cmd
 
 func (p *PodmanEngine) Shell(containerName string) error {
 	shell := "bash"
+	log.Debugf("opening %s shell in container", shell)
 
 	args := []string{
 		"exec",

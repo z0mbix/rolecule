@@ -3,17 +3,17 @@ engine:
   name: podman
 
 containers:
-  - name: rockylinux-9.1
-    image: rockylinux-systemd:9.1
   - name: ubuntu-22.04
     image: ubuntu-systemd:22.04
+  - name: rockylinux-9.1
+    image: rockylinux-systemd:9.1
 
 provisioner:
   name: ansible
   extra_args:
-    - "--diff"
+    - --diff
   env:
-    ANSIBLE_NOCOLOR: True
+    ANSIBLE_NOCOLOR: False
 
 verifier:
   name: goss

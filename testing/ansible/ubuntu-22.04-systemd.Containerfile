@@ -1,6 +1,7 @@
 FROM docker.io/ubuntu:22.04
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV PYTHONUNBUFFERED 1
 
 RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list
 

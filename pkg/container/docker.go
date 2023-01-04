@@ -2,6 +2,7 @@ package container
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/apex/log"
 	"github.com/z0mbix/rolecule/pkg/command"
@@ -27,12 +28,8 @@ func (p *DockerEngine) Run(image string, args []string) (string, error) {
 }
 
 func (p *DockerEngine) Exec(containerName string, envVars map[string]string, cmd string, args []string) (string, error) {
-	log.Debug("executing command in container")
-
 	execArgs := []string{
 		"exec",
-		"--interactive",
-		"--tty",
 	}
 
 	if len(envVars) > 0 {
@@ -55,9 +52,8 @@ func (p *DockerEngine) Exec(containerName string, envVars map[string]string, cmd
 }
 
 func (p *DockerEngine) Shell(containerName string) error {
-	log.Debug("executing command in container")
-
 	shell := "bash"
+	log.Debugf("opening %s shell in container", shell)
 
 	args := []string{
 		"exec",
@@ -108,11 +104,9 @@ func (p *DockerEngine) Exists(name string) bool {
 		return false
 	}
 
-	if output == name {
-		return true
-	}
-
-	return false
+	// docker returns the container name with a forward slash prefix :(
+	trimmedOutput := strings.TrimPrefix(output, "/")
+	return trimmedOutput == name
 }
 
 func (p *DockerEngine) List(name string) (string, error) {

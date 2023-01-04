@@ -233,8 +233,6 @@ You can use the `Containerfile`/`Dockerfile` files in the testing directory to b
 » podman build -t ubuntu-systemd:22.04 -f testing/ansible/ubuntu-22.04-systemd.Containerfile .
 ```
 
-Docker support is in the works, just proving to be a little tricky `¯\_(ツ)_/¯`
-
 ## TODO
 
 - ~~Test with podman on Mac~~
