@@ -1,6 +1,8 @@
 package provisioner
 
 import (
+	"fmt"
+	"os"
 	"reflect"
 	"testing"
 )
@@ -47,7 +49,7 @@ func TestAnsibleProvisioner_GetCommand(t *testing.T) {
 				"local",
 				"--inventory",
 				"localhost,",
-				"tests/playbook.yml",
+				fmt.Sprintf("tests%cplaybook.yml", os.PathSeparator),
 			},
 		},
 	}
