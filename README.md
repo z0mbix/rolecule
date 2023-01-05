@@ -181,7 +181,7 @@ provisioner:
 
 ### Goss
 
-The default goss configuration when you only specify the name, if equivalent to this:
+The default goss configuration when you only specify the name, is equivalent to this:
 
 ```yaml
 verifier:
@@ -217,11 +217,23 @@ goss --gossfile tests/goss_tests.yaml validate --format tap
 
 **How do I get this working on macOS?**
 
-You'll need to make sure you create a podman machine with your home directory mounted for volume mounts to work, e.g.:
+You'll need to make sure you create a rootful podman machine with your home directory mounted for volume mounts to work, e.g.:
 
 ```text
 » podman machine init --now --rootful -v $HOME:$HOME
 ```
+
+Docker Desktop should just work
+
+**How do I get this working on Windows?**
+
+You'll need to make sure you create a rootful podman machine, e.g.:
+
+```text
+» podman machine init --now --rootful
+```
+
+Docker Desktop should just work
 
 **How do I create a suitable container image for this?**
 
@@ -231,6 +243,10 @@ You can use the `Containerfile`/`Dockerfile` files in the testing directory to b
 » podman build -t rockylinux-systemd:9.1 -f testing/ansible/rockylinux-9.1-systemd.Containerfile .
 
 » podman build -t ubuntu-systemd:22.04 -f testing/ansible/ubuntu-22.04-systemd.Containerfile .
+
+» docker build -t rockylinux-systemd:9.1 -f testing/ansible/rockylinux-9.1-systemd.Dockerfile .
+
+» docker build -t ubuntu-systemd:22.04 -f testing/ansible/ubuntu-22.04-systemd.Dockerfile .
 ```
 
 ## TODO
