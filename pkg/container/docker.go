@@ -32,11 +32,9 @@ func (p *DockerEngine) Exec(containerName string, envVars map[string]string, cmd
 		"exec",
 	}
 
-	if len(envVars) > 0 {
-		for k, v := range envVars {
-			execArgs = append(execArgs, "--env")
-			execArgs = append(execArgs, fmt.Sprintf("%s=%s", k, v))
-		}
+	for k, v := range envVars {
+		execArgs = append(execArgs, "--env")
+		execArgs = append(execArgs, fmt.Sprintf("%s=%s", k, v))
 	}
 
 	execArgs = append(execArgs, containerName)
@@ -118,10 +116,6 @@ func (p *DockerEngine) List(name string) (string, error) {
 
 	exitCode, output, err := command.Execute(p.Name, args...)
 	if err != nil || exitCode != 0 {
-		return "", err
-	}
-
-	if output == name {
 		return "", err
 	}
 

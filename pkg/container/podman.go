@@ -104,11 +104,7 @@ func (p *PodmanEngine) Exists(name string) bool {
 		return false
 	}
 
-	if output == name {
-		return true
-	}
-
-	return false
+	return output == name
 }
 
 func (p *PodmanEngine) List(name string) (string, error) {
@@ -120,10 +116,6 @@ func (p *PodmanEngine) List(name string) (string, error) {
 
 	exitCode, output, err := command.Execute(p.Name, args...)
 	if err != nil || exitCode != 0 {
-		return "", err
-	}
-
-	if output == name {
 		return "", err
 	}
 
