@@ -242,16 +242,16 @@ You can use the `Containerfile`/`Dockerfile` files in the testing directory to b
 - Support testinfra verifier
 - Support scenarios, making it possible to test a role with different tags
 - ~~Support using custom provisioner command/args/env vars from rolecule.yml~~
-- Support using custom verifier command/args/env vars from rolecule.yml
+- ~~Support using custom verifier command/args/env vars from rolecule.yml~~/%s
 - Test converging with puppet apply
 - Implement `rolecule init` to generate a rolecule.yml file (use current directory structure to determine configuration management provisioner)
 - ~~Implement `rolecule list` subcommand to list all running containers~~
 - Write some tests :/
 - Document what is required for a container image
-- Test with docker on Linux
-- Test with docker desktop on Mac
+- ~~Test with docker on Linux~~
+- ~~Test with docker desktop on Mac~~
 - Test with podman desktop on Windows
-- Test with docker desktop on Windows
+- ~~Test with docker desktop on Windows~~
 - Add goreleaser config to release to Github Releases
 - Add Github actions workflow to build, test and release
 
