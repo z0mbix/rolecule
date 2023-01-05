@@ -1,6 +1,8 @@
 package verifier
 
-import "path/filepath"
+import (
+	"fmt"
+)
 
 type GossVerifier struct {
 	Name      string
@@ -16,7 +18,7 @@ func (v *GossVerifier) String() string {
 
 func (v *GossVerifier) GetCommand() (map[string]string, string, []string) {
 	// TODO: how to handle getting the gossfile path better, and support scenarios?
-	gossfilePath := filepath.Join("tests", v.TestFile)
+	gossfilePath := fmt.Sprintf("tests/%s", v.TestFile)
 	args := []string{"--gossfile", gossfilePath, "validate"}
 	args = append(args, v.ExtraArgs...)
 	return nil, v.Command, args

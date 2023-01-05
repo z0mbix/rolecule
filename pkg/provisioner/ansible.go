@@ -1,7 +1,7 @@
 package provisioner
 
 import (
-	"path/filepath"
+	"fmt"
 	"strings"
 
 	"github.com/apex/log"
@@ -23,7 +23,7 @@ func (a *AnsibleProvisioner) String() string {
 
 func (a *AnsibleProvisioner) GetCommand() (map[string]string, string, []string) {
 	// TODO: how to handle getting the playbook path better, and support scenarios?
-	playbookPath := filepath.Join("tests", a.Playbook)
+	playbookPath := fmt.Sprintf("tests/%s", a.Playbook)
 	args := append(a.Args, playbookPath)
 	return a.Env, a.Command, args
 }
