@@ -1,8 +1,6 @@
 package verifier
 
 import (
-	"fmt"
-	"os"
 	"reflect"
 	"testing"
 )
@@ -43,7 +41,7 @@ func TestGossVerifier_GetCommand(t *testing.T) {
 			want1: "goss",
 			want2: []string{
 				"--gossfile",
-				fmt.Sprintf("tests%cgoss.yaml", os.PathSeparator),
+				"tests/goss.yaml",
 				"validate",
 			},
 		},
@@ -62,7 +60,7 @@ func TestGossVerifier_GetCommand(t *testing.T) {
 			want1: "goss",
 			want2: []string{
 				"--gossfile",
-				fmt.Sprintf("tests%cgossfile.yaml", os.PathSeparator),
+				"tests/gossfile.yaml",
 				"validate",
 				"--format",
 				"json",
