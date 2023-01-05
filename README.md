@@ -246,11 +246,11 @@ You can use the `Containerfile`/`Dockerfile` files in the testing directory to b
 - Test converging with puppet apply
 - Implement `rolecule init` to generate a rolecule.yml file (use current directory structure to determine configuration management provisioner)
 - ~~Implement `rolecule list` subcommand to list all running containers~~
-- Write some tests :/
+- ~~Write some tests :/~~
 - Document what is required for a container image
 - ~~Test with docker on Linux~~
 - ~~Test with docker desktop on Mac~~
-- Test with podman desktop on Windows
+- ~~Test with podman desktop on Windows~~
 - ~~Test with docker desktop on Windows~~
 - Add goreleaser config to release to Github Releases
 - Add Github actions workflow to build, test and release
@@ -261,5 +261,4 @@ You can use the `Containerfile`/`Dockerfile` files in the testing directory to b
 - Should we support Chef? (No real need as they have test-kitchen?)
 - Should we support InSpec? (I think probably yes, as it's pretty awesome)
 - Should we run testinfra/inspec inside the container or from outside? (Nice to not need all the python/ruby environments/packages on the host)
-- Should we support Windows? (Yeah...probably)
 - Should we support other shells than bash? Not sure we need to test with alpine as most people don't run their servers on alpine, this ain't Kubernetes
