@@ -1,8 +1,6 @@
 FROM rockylinux/rockylinux:9.1
 
-ENV PYTHONUNBUFFERED 1
-
-RUN dnf install -y systemd systemd-libs util-linux ansible-core procps-ng && \
+RUN dnf install -y systemd systemd-libs util-linux ansible-core procps-ng vim-enhanced && \
   rm -f /lib/systemd/system/multi-user.target.wants/*;\
   rm -f /etc/systemd/system/*.wants/*;\
   rm -f /lib/systemd/system/local-fs.target.wants/*; \

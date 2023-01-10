@@ -2,8 +2,6 @@ package verifier
 
 import (
 	"fmt"
-
-	"github.com/apex/log"
 )
 
 type Config struct {
@@ -14,6 +12,8 @@ type Config struct {
 
 type Verifier interface {
 	GetCommand() (map[string]string, string, []string)
+	GetTestFile() string
+	WithTestFile(file string) Verifier
 	String() string
 }
 
@@ -27,18 +27,4 @@ func NewVerifier(config Config) (Verifier, error) {
 	}
 
 	return nil, fmt.Errorf("Verifier '%s' not recognised (only goss is currently supported)", config.Name)
-}
-
-func getGossConfig(config Config) *GossVerifier {
-	gossConfig := defaultGossConfig
-	if config.TestFile != "" {
-		log.Debugf("using gossfile from config file: %v", config.TestFile)
-		gossConfig.TestFile = config.TestFile
-	}
-	if len(config.ExtraArgs) > 0 {
-		log.Debugf("using goss extra args from config file: %v", config.ExtraArgs)
-		gossConfig.ExtraArgs = config.ExtraArgs
-	}
-
-	return gossConfig
 }

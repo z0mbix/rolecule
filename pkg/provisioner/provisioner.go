@@ -6,6 +6,8 @@ import (
 
 type Provisioner interface {
 	GetCommand() (map[string]string, string, []string)
+	WithTags([]string) Provisioner
+	WithPlaybook(string) Provisioner
 	String() string
 }
 
@@ -14,7 +16,7 @@ type Config struct {
 	Command   string            `mapstructure:"command"`
 	Args      []string          `mapstructure:"args"`
 	ExtraArgs []string          `mapstructure:"extra_args"`
-	Env       map[string]string `mapstructure:"env"`
+	EnvVars   map[string]string `mapstructure:"env"`
 	Playbook  string            `mapstructure:"playbook"`
 }
 
@@ -23,5 +25,5 @@ func NewProvisioner(config Config) (Provisioner, error) {
 		return getAnsibleConfig(config), nil
 	}
 
-	return nil, fmt.Errorf("provisioner '%s' not recognised (only ansible currently supported)", config.Name)
+	return nil, fmt.Errorf("provisioner '%s' not recognised", config.Name)
 }
