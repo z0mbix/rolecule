@@ -43,7 +43,7 @@ func converge(cfg *config.Config) error {
 			}
 		}
 
-		log.Infof("converging container %s with %s", instance.Name, cfg.Provisioner)
+		log.Infof("converging container %s with %s", instance.Name, instance.Provisioner)
 		output, err := instance.Converge()
 		if err != nil {
 			log.Error(err.Error())

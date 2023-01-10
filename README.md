@@ -17,20 +17,21 @@ First, you need to create a simple `rolecule.yml` file in the root of your role/
 engine:
   name: podman
 
-containers:
-  - name: rockylinux-9.1
-    image: rockylinux-systemd:9.1
-  - name: ubuntu-22.04
-    image: ubuntu-systemd:22.04
-
 provisioner:
   name: ansible
 
 verifier:
   name: goss
+
+instances:
+  - name: rockylinux-9.1
+    image: rockylinux-systemd:9.1
+  - name: ubuntu-22.04
+    image: ubuntu-systemd:22.04
+
 ```
 
-Then, from the root of your role (e.g. sshd), run `rolecule test`, e.g.:
+Then, from the root of your role (e.g. [sshd](testing/ansible/roles/sshd/rolecule.yml)), run `rolecule test`, e.g.:
 
 ```text
 » rolecule test
@@ -88,7 +89,6 @@ Available Commands:
   create      Create a new container(s) to test the role in
   destroy     Destroy everything
   help        Help about any command
-  init        Initialise the project with a nice new rolecule.yml file
   list        List the running containers for this role/module/recipe
   shell       Open a shell in a container
   test        Create the container(s), converge them, test them, then clean up
@@ -177,6 +177,61 @@ provisioner:
     - --verbose
 ```
 
+## Instances
+
+These are instances of each test scenario, allowing you can test different ansible tags with specific test files.
+
+A simple example for a single Ubuntu test would be:
+
+```yaml
+instances:
+  - name: ubuntu-22.04
+    image: ubuntu-systemd:22.04
+```
+
+Something more elaborate:
+
+```yaml
+instances:
+  - name: ubuntu-22.04
+    image: ubuntu-systemd:22.04
+    playbook: ubuntu/playbook.yml
+  - name: ubuntu-22.04-build
+    image: ubuntu-systemd:22.04
+    arch: amd64
+    playbook: ubuntu/playbook.yml
+    testfile: goss-build.yaml
+    tags:
+      - build
+  - name: rockylinux-9.1
+    image: rockylinux-systemd:9.1
+  - name: rockylinux-9.1-build
+    image: rockylinux-systemd:9.1
+    testfile: goss-build.yaml
+    tags:
+      - build
+```
+
+Where the above will test two different scenarios for each of the Ubuntu and Rocky Linux containers.
+
+If you do not specify the testfile in the instance config, it will use the one specified in the verifier config.
+
+If you do not specify the playbook in the instance config, it will use the one specified in the provisioner config.
+
+Testing multiple architectures is support, but untested as I don't currently have an easy way to test it, but should be as simple as something like:
+
+```yaml
+instances:
+  - name: ubuntu-22.04-amd64
+    image: ubuntu-systemd:22.04
+    arch: amd64
+  - name: ubuntu-22.04
+    image: ubuntu-systemd:22.04-arm64
+    arch: arm64
+```
+
+If you don't specify the arch, it just uses the current host's architecture
+
 ## Verifiers
 
 ### Goss
@@ -201,7 +256,7 @@ If you want to customise how goss validate is executed, you can change the gossf
 ```yaml
 verifier:
   name: goss
-  testfile: goss_tests.yaml
+  testfile: goss-build.yaml
   extra_args:
     - --format
     - tap
@@ -210,7 +265,7 @@ verifier:
 It will execute:
 
 ```text
-goss --gossfile tests/goss_tests.yaml validate --format tap
+goss --gossfile tests/goss-build.yaml validate --format tap
 ```
 
 ### FAQ
@@ -240,12 +295,10 @@ Docker Desktop should just work
 You can use the `Containerfile`/`Dockerfile` files in the testing directory to build suitable images:
 
 ```text
-» podman build -t rockylinux-systemd:9.1 -f testing/ansible/rockylinux-9.1-systemd.Containerfile .
-
-» podman build -t ubuntu-systemd:22.04 -f testing/ansible/ubuntu-22.04-systemd.Containerfile .
+» podman build -t rockylinux-systemd:9.1 -f testing/ansible/rockylinux-9.1-systemd.Dockerfile .
+» podman build -t ubuntu-systemd:22.04 -f testing/ansible/ubuntu-22.04-systemd.Dockerfile .
 
 » docker build -t rockylinux-systemd:9.1 -f testing/ansible/rockylinux-9.1-systemd.Dockerfile .
-
 » docker build -t ubuntu-systemd:22.04 -f testing/ansible/ubuntu-22.04-systemd.Dockerfile .
 ```
 
@@ -256,25 +309,22 @@ You can use the `Containerfile`/`Dockerfile` files in the testing directory to b
 - Make provisioner output **unbuffered**
 - Support installing ansible collections
 - Support testinfra verifier
-- Support scenarios, making it possible to test a role with different tags
+- ~~Support scenarios, making it possible to test a role with different tags~~
 - ~~Support using custom provisioner command/args/env vars from rolecule.yml~~
 - ~~Support using custom verifier command/args/env vars from rolecule.yml~~/%s
-- Test converging with puppet apply
 - Implement `rolecule init` to generate a rolecule.yml file (use current directory structure to determine configuration management provisioner)
 - ~~Implement `rolecule list` subcommand to list all running containers~~
 - ~~Write some tests :/~~
-- Document what is required for a container image
+- ~~Document what is required for a container image~~
 - ~~Test with docker on Linux~~
 - ~~Test with docker desktop on Mac~~
 - ~~Test with podman desktop on Windows~~
 - ~~Test with docker desktop on Windows~~
 - Add goreleaser config to release to Github Releases
-- Add Github actions workflow to build, test and release
+- Add Github actions workflow to ~~build~~, ~~test~~ and release
 
 ## Questions
 
 - Should we add colour support to output?
-- Should we support Chef? (No real need as they have test-kitchen?)
 - Should we support InSpec? (I think probably yes, as it's pretty awesome)
 - Should we run testinfra/inspec inside the container or from outside? (Nice to not need all the python/ruby environments/packages on the host)
-- Should we support other shells than bash? Not sure we need to test with alpine as most people don't run their servers on alpine, this ain't Kubernetes

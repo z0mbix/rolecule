@@ -2,13 +2,12 @@ FROM ubuntu:22.04
 
 ENV container docker
 ENV DEBIAN_FRONTEND noninteractive
-ENV PYTHONUNBUFFERED 1
 
 RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list
 
 # hadolint ignore=DL3008
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends ca-certificates systemd curl cron python3 python3-pip sudo bash iproute2 net-tools \
+  && apt-get install -y --no-install-recommends ca-certificates systemd curl cron python3 python3-pip sudo bash iproute2 net-tools vim \
   && python3 -m pip install ansible ansible-core \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

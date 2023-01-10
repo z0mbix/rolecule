@@ -1,0 +1,6 @@
+package:
+  openssh-server:
+    installed: true
+user:
+  sshd:
+    exists: true

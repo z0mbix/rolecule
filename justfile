@@ -32,11 +32,19 @@ build-docker-ansible-images:
 
 # Build podman images with ansible support
 build-podman-ansible-images:
-  podman build -t rockylinux-systemd:9.1 -f testing/ansible/rockylinux-9.1-systemd.Containerfile .
-  podman build -t ubuntu-systemd:22.04 -f testing/ansible/ubuntu-22.04-systemd.Containerfile .
+  podman build -t rockylinux-systemd:9.1 -f testing/ansible/rockylinux-9.1-systemd.Dockerfile .
+  podman build -t ubuntu-systemd:22.04 -f testing/ansible/ubuntu-22.04-systemd.Dockerfile .
 
 # Build all images with ansible support
 build-ansible-images: build-docker-ansible-images build-podman-ansible-images
+
+# Build a local only, snapshot release
+snapshot:
+    goreleaser --snapshot --skip-publish --rm-dist --debug
+
+# Create and publish a new release
+release:
+    goreleaser --rm-dist
 
 # Show help menu
 help:

@@ -1,29 +1,36 @@
-package container
+package instance
 
 import (
 	"fmt"
 
 	"github.com/apex/log"
+	"github.com/z0mbix/rolecule/pkg/container"
 	"github.com/z0mbix/rolecule/pkg/provisioner"
 	"github.com/z0mbix/rolecule/pkg/verifier"
 )
 
-type InstanceConfig struct {
-	Name  string   `mapstructure:"name"`
-	Image string   `mapstructure:"image"`
-	Arch  string   `mapstructure:"arch"`
-	Args  []string `mapstructure:"args"`
-}
-
 type Instances []Instance
 
+type Config struct {
+	Name     string   `mapstructure:"name"`
+	Image    string   `mapstructure:"image"`
+	Arch     string   `mapstructure:"arch"`
+	Args     []string `mapstructure:"args"`
+	Playbook string   `mapstructure:"playbook"`
+	TestFile string   `mapstructure:"testfile"`
+	Tags     []string `mapstructure:"tags"`
+}
+
 type Instance struct {
-	Name    string
-	Image   string
-	Args    []string
-	Arch    string
-	WorkDir string
-	Engine
+	Name     string
+	Image    string
+	Arch     string
+	Args     []string
+	Playbook string
+	TestFile string
+	Tags     []string
+	WorkDir  string
+	container.Engine
 	Provisioner provisioner.Provisioner
 	Verifier    verifier.Verifier
 }

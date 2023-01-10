@@ -8,7 +8,7 @@ import (
 func TestTestInfraVerifier_String(t *testing.T) {
 	tests := []struct {
 		name string
-		v    *TestInfraVerifier
+		v    TestInfraVerifier
 		want string
 	}{
 		{
@@ -29,7 +29,7 @@ func TestTestInfraVerifier_String(t *testing.T) {
 func TestTestInfraVerifier_GetCommand(t *testing.T) {
 	tests := []struct {
 		name  string
-		v     *TestInfraVerifier
+		v     TestInfraVerifier
 		want  map[string]string
 		want1 string
 		want2 []string

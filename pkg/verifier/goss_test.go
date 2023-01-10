@@ -8,7 +8,7 @@ import (
 func TestGossVerifier_String(t *testing.T) {
 	tests := []struct {
 		name string
-		v    *GossVerifier
+		v    GossVerifier
 		want string
 	}{
 		{
@@ -29,7 +29,7 @@ func TestGossVerifier_String(t *testing.T) {
 func TestGossVerifier_GetCommand(t *testing.T) {
 	tests := []struct {
 		name  string
-		v     *GossVerifier
+		v     GossVerifier
 		want  map[string]string
 		want1 string
 		want2 []string
@@ -47,7 +47,7 @@ func TestGossVerifier_GetCommand(t *testing.T) {
 		},
 		{
 			name: "goss-custom",
-			v: &GossVerifier{
+			v: GossVerifier{
 				Name:     "goss",
 				Command:  "goss",
 				TestFile: "gossfile.yaml",

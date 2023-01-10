@@ -4,6 +4,7 @@
     name: openssh-server
   tags:
     - build
+    - provision
 
 - name: configure
   ansible.builtin.template:

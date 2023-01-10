@@ -8,27 +8,21 @@ import (
 	"golang.org/x/exp/maps"
 )
 
-type AnsibleProvisioner struct {
+type AnsibleLocalProvisioner struct {
 	Name      string
 	Command   string
 	Args      []string
 	ExtraArgs []string
-	Env       map[string]string
+	Tags      []string
+	EnvVars   map[string]string
 	Playbook  string
 }
 
-func (a *AnsibleProvisioner) String() string {
+func (a AnsibleLocalProvisioner) String() string {
 	return a.Name
 }
 
-func (a *AnsibleProvisioner) GetCommand() (map[string]string, string, []string) {
-	// TODO: how to handle getting the playbook path better, and support scenarios?
-	playbookPath := fmt.Sprintf("tests/%s", a.Playbook)
-	args := append(a.Args, playbookPath)
-	return a.Env, a.Command, args
-}
-
-var defaultAnsibleConfig = &AnsibleProvisioner{
+var defaultAnsibleConfig = AnsibleLocalProvisioner{
 	Name:    "ansible",
 	Command: "ansible-playbook",
 	Args: []string{
@@ -37,14 +31,14 @@ var defaultAnsibleConfig = &AnsibleProvisioner{
 		"--inventory",
 		"localhost,",
 	},
-	Env: map[string]string{
+	EnvVars: map[string]string{
 		"ANSIBLE_ROLES_PATH": ".",
 		"ANSIBLE_NOCOWS":     "True",
 	},
 	Playbook: "playbook.yml",
 }
 
-func getAnsibleConfig(config Config) *AnsibleProvisioner {
+func getAnsibleConfig(config Config) AnsibleLocalProvisioner {
 	ansibleConfig := defaultAnsibleConfig
 	if config.Command != "" {
 		log.Debugf("using ansible command from config file: %v", config.Command)
@@ -61,14 +55,14 @@ func getAnsibleConfig(config Config) *AnsibleProvisioner {
 		ansibleConfig.Args = append(ansibleConfig.Args, config.ExtraArgs...)
 	}
 
-	if len(config.Env) > 0 {
+	if len(config.EnvVars) > 0 {
 		// Work around viper lowercasing map keys: https://github.com/spf13/viper/issues/373
 		uppercaseEnv := make(map[string]string)
-		for k, v := range config.Env {
+		for k, v := range config.EnvVars {
 			uppercaseEnv[strings.ToUpper(k)] = v
 		}
-		log.Debugf("using ansible env from config file: %v", uppercaseEnv)
-		maps.Copy(ansibleConfig.Env, uppercaseEnv)
+		log.Debugf("using extra ansible env from config file: %v", uppercaseEnv)
+		maps.Copy(ansibleConfig.EnvVars, uppercaseEnv)
 	}
 
 	if config.Playbook != "" {
@@ -77,4 +71,32 @@ func getAnsibleConfig(config Config) *AnsibleProvisioner {
 	}
 
 	return ansibleConfig
+}
+
+func (a AnsibleLocalProvisioner) WithExtraArgs(args []string) Provisioner {
+	a.Tags = append(a.ExtraArgs, args...)
+	return a
+}
+
+func (a AnsibleLocalProvisioner) WithTags(tags []string) Provisioner {
+	a.Tags = tags
+	return a
+}
+
+func (a AnsibleLocalProvisioner) WithPlaybook(playbook string) Provisioner {
+	a.Playbook = playbook
+	return a
+}
+
+func (a AnsibleLocalProvisioner) GetCommand() (map[string]string, string, []string) {
+	playbookPath := fmt.Sprintf("tests/%s", a.Playbook)
+	args := a.Args
+
+	for _, tag := range a.Tags {
+		args = append(args, "--tags")
+		args = append(args, tag)
+	}
+
+	args = append(args, playbookPath)
+	return a.EnvVars, a.Command, args
 }

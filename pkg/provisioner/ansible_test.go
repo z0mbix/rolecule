@@ -8,7 +8,7 @@ import (
 func TestAnsibleProvisioner_String(t *testing.T) {
 	tests := []struct {
 		name string
-		a    *AnsibleProvisioner
+		a    AnsibleLocalProvisioner
 		want string
 	}{
 		{
@@ -29,7 +29,7 @@ func TestAnsibleProvisioner_String(t *testing.T) {
 func TestAnsibleProvisioner_GetCommand(t *testing.T) {
 	tests := []struct {
 		name  string
-		a     *AnsibleProvisioner
+		a     AnsibleLocalProvisioner
 		want  map[string]string
 		want1 string
 		want2 []string

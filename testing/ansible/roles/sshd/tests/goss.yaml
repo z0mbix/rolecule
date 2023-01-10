@@ -1,18 +1,9 @@
-port:
-  tcp:22:
-    listening: true
-    ip:
-      - 0.0.0.0
-service:
-  sshd:
-    enabled: true
-    running: true
+package:
+  openssh-server:
+    installed: true
 user:
   sshd:
     exists: true
-process:
-  sshd:
-    running: true
 file:
   /etc/ssh/sshd_config:
     exists: true
@@ -28,5 +19,18 @@ file:
       - "LogLevel INFO"
       - "PermitRootLogin no"
       - "PubkeyAuthentication yes"
-      - "AuthorizedKeysFile	.ssh/authorized_keys"
+      - "/AuthorizedKeysFile\\s.ssh/authorized_keys/"
       - "Subsystem	sftp	/usr/libexec/openssh/sftp-server"
+      - "!/PermitRootLogin[[:space:]].*yes/"
+service:
+  sshd:
+    enabled: true
+    running: true
+process:
+  sshd:
+    running: true
+port:
+  tcp:22:
+    listening: true
+    ip:
+      - 0.0.0.0
