@@ -68,12 +68,12 @@ func (i *Instance) Create() (string, error) {
 	return output, nil
 }
 
-func (i *Instance) Converge() (string, error) {
+func (i *Instance) Converge() error {
 	env, cmd, args := i.Provisioner.GetCommand()
 	return i.Exec(i.Name, env, cmd, args)
 }
 
-func (i *Instance) Verify() (string, error) {
+func (i *Instance) Verify() error {
 	env, cmd, args := i.Verifier.GetCommand()
 	return i.Exec(i.Name, env, cmd, args)
 }

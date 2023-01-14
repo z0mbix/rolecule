@@ -19,15 +19,7 @@ func convertEnvVarMapToSlice(envVars map[string]string) []string {
 }
 
 func Execute(name string, args ...string) (int, string, error) {
-	cmd := exec.Command(name, args...)
-	log.Debugf("executing command: %s", cmd)
-	out, err := cmd.CombinedOutput()
-	exitCode := cmd.ProcessState.ExitCode()
-	if err != nil {
-		return exitCode, string(out), fmt.Errorf("command failed: %s", err)
-	}
-	output := strings.TrimSuffix(string(out), "\n")
-	return exitCode, output, nil
+	return ExecuteWithEnvVars(nil, name, args...)
 }
 
 func ExecuteWithEnvVars(env map[string]string, name string, args ...string) (int, string, error) {

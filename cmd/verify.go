@@ -4,8 +4,6 @@ Copyright © 2023 David Wooldridge <zombie@zombix.org>
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/apex/log"
 	"github.com/spf13/cobra"
 	"github.com/z0mbix/rolecule/pkg/config"
@@ -35,11 +33,9 @@ var verifyCmd = &cobra.Command{
 func verify(cfg *config.Config) error {
 	for _, instance := range cfg.Instances {
 		log.Infof("verifying container %s with %s (%s)", instance.Name, instance.Verifier, instance.Verifier.GetTestFile())
-		output, err := instance.Verify()
-		if err != nil {
-			return fmt.Errorf("%w - %s", err, output)
+		if err := instance.Verify(); err != nil {
+			return err
 		}
-		fmt.Println(output)
 	}
 
 	return nil

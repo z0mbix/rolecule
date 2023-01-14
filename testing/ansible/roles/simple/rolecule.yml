@@ -1,40 +1,20 @@
 ---
 engine:
-  # name: docker
-  name: podman
-
-containers:
-  - name: rockylinux-9.1-amd64
-    image: rockylinux-systemd:9.1
-    arch: amd64
-  - name: rockylinux-9.1-arm64
-    image: rockylinux-systemd:9.1
-    arch: amd64
-  # - name: rockylinux-systemd-9.1-arm64
-  #   image: localhost/rockylinux-systemd:9.1
-  #   arch: arm64
-  # - name: rockylinux-systemd-test3
-  #   image: localhost/rockylinux-systemd:9.1
-  # - name: ubuntu-systemd-22.04
-  #   image: ubuntu-systemd:22.04
-  #   args:
-  #     - "--env"
-  #     - "TEST_ENV_VAR=enabled"
+  name: docker
 
 provisioner:
   name: ansible
-  # command: ansible-playbook --connection local --inventory localhost,
-  # env:
-  #   ANSIBLE_ROLES_PATH: .
-  #   ANSIBLE_NOCOWS: True
+  extra_args:
+    - --diff
+  env:
+    ANSIBLE_NOCOLOR: False
 
 verifier:
   name: goss
+  extra_args:
+    - --format
+    - tap
 
-# scenarios:
-#   - name: build
-#     tags:
-#       - build
-#   - name: provision
-#     tags:
-#       - provision
+instances:
+  - name: rockylinux-9.1
+    image: rockylinux-systemd:9.1

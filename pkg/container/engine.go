@@ -7,7 +7,7 @@ import (
 )
 
 type Engine interface {
-	Exec(string, map[string]string, string, []string) (string, error)
+	Exec(string, map[string]string, string, []string) error
 	Exists(string) bool
 	List(string) (string, error)
 	Remove(string) error
