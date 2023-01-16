@@ -4,8 +4,6 @@ Copyright © 2022 David Wooldridge <zombie@zombix.org>
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/apex/log"
 	"github.com/spf13/cobra"
 	"github.com/z0mbix/rolecule/pkg/config"
@@ -44,11 +42,9 @@ func converge(cfg *config.Config) error {
 		}
 
 		log.Infof("converging container %s with %s", instance.Name, instance.Provisioner)
-		output, err := instance.Converge()
-		if err != nil {
+		if err := instance.Converge(); err != nil {
 			log.Error(err.Error())
 		}
-		fmt.Println(output)
 	}
 
 	return nil

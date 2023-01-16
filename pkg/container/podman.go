@@ -26,7 +26,7 @@ func (p *PodmanEngine) Run(image string, args []string) (string, error) {
 	return output, nil
 }
 
-func (p *PodmanEngine) Exec(containerName string, envVars map[string]string, cmd string, args []string) (string, error) {
+func (p *PodmanEngine) Exec(containerName string, envVars map[string]string, cmd string, args []string) error {
 	execArgs := []string{
 		"exec",
 		"--interactive",
@@ -44,12 +44,8 @@ func (p *PodmanEngine) Exec(containerName string, envVars map[string]string, cmd
 	execArgs = append(execArgs, cmd)
 	execArgs = append(execArgs, args...)
 
-	_, output, err := command.Execute(p.Name, execArgs...)
-	if err != nil {
-		return output, err
-	}
-
-	return output, nil
+	_, err := command.Interactive(p.Name, execArgs...)
+	return err
 }
 
 func (p *PodmanEngine) Shell(containerName string) error {

@@ -51,7 +51,7 @@ func Get() (*Config, error) {
 	}
 
 	log.Debugf("config file: %+v", configValues)
-	log.Debugf("config file instnaces: %+v", configValues.Instances)
+	log.Debugf("config file instances: %+v", configValues.Instances)
 
 	engine, err := container.NewEngine(configValues.Engine.Name)
 	if err != nil {
