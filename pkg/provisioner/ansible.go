@@ -13,6 +13,7 @@ type AnsibleLocalProvisioner struct {
 	Command   string
 	Args      []string
 	ExtraArgs []string
+	SkipTags  []string
 	Tags      []string
 	EnvVars   map[string]string
 	Playbook  string
@@ -78,6 +79,11 @@ func (a AnsibleLocalProvisioner) WithExtraArgs(args []string) Provisioner {
 	return a
 }
 
+func (a AnsibleLocalProvisioner) WithSkipTags(tags []string) Provisioner {
+	a.SkipTags = tags
+	return a
+}
+
 func (a AnsibleLocalProvisioner) WithTags(tags []string) Provisioner {
 	a.Tags = tags
 	return a
@@ -94,6 +100,11 @@ func (a AnsibleLocalProvisioner) GetCommand() (map[string]string, string, []stri
 
 	for _, tag := range a.Tags {
 		args = append(args, "--tags")
+		args = append(args, tag)
+	}
+
+	for _, tag := range a.SkipTags {
+		args = append(args, "--skip-tags")
 		args = append(args, tag)
 	}
 

@@ -18,6 +18,7 @@ type Config struct {
 	Args     []string `mapstructure:"args"`
 	Playbook string   `mapstructure:"playbook"`
 	TestFile string   `mapstructure:"testfile"`
+	SkipTags []string `mapstructure:"skip_tags"`
 	Tags     []string `mapstructure:"tags"`
 }
 
@@ -28,6 +29,7 @@ type Instance struct {
 	Args     []string
 	Playbook string
 	TestFile string
+	SkipTags []string
 	Tags     []string
 	WorkDir  string
 	container.Engine

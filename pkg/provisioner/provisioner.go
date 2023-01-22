@@ -6,6 +6,7 @@ import (
 
 type Provisioner interface {
 	GetCommand() (map[string]string, string, []string)
+	WithSkipTags([]string) Provisioner
 	WithTags([]string) Provisioner
 	WithPlaybook(string) Provisioner
 	String() string

@@ -82,7 +82,7 @@ func Get() (*Config, error) {
 
 	var instances instance.Instances
 	for _, i := range configValues.Instances {
-		iProvisioner := prov.WithTags(i.Tags)
+		iProvisioner := prov.WithTags(i.Tags).WithSkipTags(i.SkipTags)
 
 		if i.Playbook != "" {
 			iProvisioner = iProvisioner.WithPlaybook(i.Playbook)
