@@ -210,6 +210,8 @@ instances:
     testfile: goss-build.yaml
     tags:
       - build
+    skip_tags:
+      - provision
 ```
 
 Where the above will test two different scenarios for each of the Ubuntu and Rocky Linux containers.
