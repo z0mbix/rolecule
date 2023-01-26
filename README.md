@@ -2,11 +2,11 @@
 
 ## Description
 
-`rolecule` is a simple tool to help you test your configuration management code works as you expect, by creating systemd enabled containers with either docker or podman, then converging them with your configured provisioner (ansible by default). We're basically treating containers as mini VMs.
+`rolecule` is a simple tool to help you test your ansible roles by creating systemd enabled containers with either docker or podman, then converging them with ansible. We're basically treating containers as mini VMs.
 
-Once converged, it will run a verifier to test it all. Currently, the only supported provisioner is [goss](https://github.com/goss-org/goss), [testinfra](https://testinfra.readthedocs.io/) will be added soon.
+Once converged, it will run a verifier to test it all. Currently, the only supported provisioner is [goss](https://github.com/goss-org/goss), but [testinfra](https://testinfra.readthedocs.io/) will be added soon.
 
-This should speed up testing your roles if you're using virtual machines.
+This should speed up testing your roles if you're using local or remote virtual machines.
 
 ## Usage
 
@@ -227,12 +227,12 @@ instances:
   - name: ubuntu-22.04-amd64
     image: ubuntu-systemd:22.04
     arch: amd64
-  - name: ubuntu-22.04
-    image: ubuntu-systemd:22.04-arm64
+  - name: ubuntu-22.04-arm64
+    image: ubuntu-systemd:22.04
     arch: arm64
 ```
 
-If you don't specify the arch, it just uses the current host's architecture
+If you don't specify the arch, it will use the current host's architecture
 
 ## Verifiers
 
@@ -294,21 +294,32 @@ Docker Desktop should just work
 
 **How do I create a suitable container image for this?**
 
-You can use the `Containerfile`/`Dockerfile` files in the testing directory to build suitable images:
+You can use the `Dockerfile` files in the testing directory to build suitable images:
 
 ```text
 » podman build -t rockylinux-systemd:9.1 -f testing/ansible/rockylinux-9.1-systemd.Dockerfile .
 » podman build -t ubuntu-systemd:22.04 -f testing/ansible/ubuntu-22.04-systemd.Dockerfile .
+» podman build -t amazonlinux2-systemd:2 -f testing/ansible/amazonlinux2-systemd.Dockerfile .
+```
 
+or
+
+```text
 » docker build -t rockylinux-systemd:9.1 -f testing/ansible/rockylinux-9.1-systemd.Dockerfile .
 » docker build -t ubuntu-systemd:22.04 -f testing/ansible/ubuntu-22.04-systemd.Dockerfile .
+» docker build -t amazonlinux2-systemd:2 -f testing/ansible/amazonlinux2-systemd.Dockerfile .
 ```
+
+**How do I install collections?**
+
+For now, I've been building in my collections in to the container images in the default location so they
+are discovered automatically by ansible.
 
 ## TODO
 
 - ~~Test with podman on Mac~~
 - ~~Test docker on Linux~~
-- Make provisioner output **unbuffered**
+- ~~Make provisioner output unbuffered~~
 - Support installing ansible collections
 - Support testinfra verifier
 - ~~Support scenarios, making it possible to test a role with different tags~~
@@ -324,9 +335,3 @@ You can use the `Containerfile`/`Dockerfile` files in the testing directory to b
 - ~~Test with docker desktop on Windows~~
 - Add goreleaser config to release to Github Releases
 - Add Github actions workflow to ~~build~~, ~~test~~ and release
-
-## Questions
-
-- Should we add colour support to output?
-- Should we support InSpec? (I think probably yes, as it's pretty awesome)
-- Should we run testinfra/inspec inside the container or from outside? (Nice to not need all the python/ruby environments/packages on the host)
