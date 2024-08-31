@@ -38,7 +38,7 @@ func TestAnsibleProvisioner_GetCommand(t *testing.T) {
 			name: "command",
 			a:    defaultAnsibleConfig,
 			want: map[string]string{
-				"ANSIBLE_ROLES_PATH": ".",
+				"ANSIBLE_ROLES_PATH": ".:/etc/ansible/roles",
 				"ANSIBLE_NOCOWS":     "True",
 			},
 			want1: "ansible-playbook",

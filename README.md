@@ -177,6 +177,14 @@ provisioner:
     - --verbose
 ```
 
+## Role dependencies
+
+If you have role dependencies in your `meta/main.yml` file using local roles in the same location
+as the current role, that directory will be mounted at `/etc/ansible/roles` in the container so
+ansible can find them.
+
+Support for using roles from a galaxy server is not yet implemented.
+
 ## Instances
 
 These are instances of each test scenario, allowing you can test different ansible tags with specific test files.

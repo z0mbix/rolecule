@@ -1,0 +1,2 @@
+---
+ansible_swappiness: 10

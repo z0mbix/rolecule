@@ -32,12 +32,14 @@ type Instance struct {
 	SkipTags []string
 	Tags     []string
 	WorkDir  string
+	RoleDir  string
 	container.Engine
 	Provisioner provisioner.Provisioner
 	Verifier    verifier.Verifier
 }
 
 func (i *Instance) Create() (string, error) {
+	ansibleRoleDir := "/etc/ansible/roles"
 	workDir := "/src"
 	instanceArgs := []string{
 		"run",
@@ -51,6 +53,7 @@ func (i *Instance) Create() (string, error) {
 		"--cgroupns", "host",
 		"--volume", "/sys/fs/cgroup:/sys/fs/cgroup:rw",
 		"--volume", fmt.Sprintf("%s:%s", i.WorkDir, workDir),
+		"--volume", fmt.Sprintf("%s:%s", i.RoleDir, ansibleRoleDir),
 		"--workdir", workDir,
 	}
 

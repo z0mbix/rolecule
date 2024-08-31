@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -37,10 +38,9 @@ func Get() (*Config, error) {
 	viper.AddConfigPath(".")
 
 	if err := viper.ReadInConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+		var configFileNotFoundError viper.ConfigFileNotFoundError
+		if errors.As(err, &configFileNotFoundError) {
 			log.Fatalf("config file not found: %s.yml", AppName)
-		} else {
-			log.Fatalf("config file not valid: %s", err)
 		}
 	}
 
@@ -63,12 +63,16 @@ func Get() (*Config, error) {
 		return nil, err
 	}
 
+	// resolve any symlinks in the current working directory
 	cwdNoSymlinks, err := filepath.EvalSymlinks(cwd)
 	if err != nil {
 		return nil, err
 	}
 
 	roleName := filepath.Base(cwd)
+	roleDir := filepath.Dir(cwd)
+	log.Debugf("role name: %s", roleName)
+	log.Debugf("role dir: %s", roleDir)
 
 	prov, err := provisioner.NewProvisioner(configValues.Provisioner)
 	if err != nil {
@@ -100,6 +104,7 @@ func Get() (*Config, error) {
 			Args:        i.Args,
 			Playbook:    i.Playbook,
 			WorkDir:     cwdNoSymlinks,
+			RoleDir:     roleDir,
 			Engine:      engine,
 			Provisioner: iProvisioner,
 			Verifier:    iVerifier,

@@ -1,6 +1,6 @@
 ---
 engine:
-  name: podman
+  name: docker
 
 provisioner:
   name: ansible

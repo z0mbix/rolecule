@@ -6,6 +6,7 @@ provisioner:
   name: ansible
   extra_args:
     - --diff
+    - --verbose
   env:
     ANSIBLE_NOCOLOR: False
 
@@ -18,3 +19,5 @@ verifier:
 instances:
   - name: ubuntu-24.04
     image: ubuntu-systemd:24.04
+    tags:
+      - provision

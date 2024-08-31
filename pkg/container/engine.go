@@ -25,19 +25,18 @@ func NewEngine(name string) (Engine, error) {
 		return nil, fmt.Errorf("container engine '%s' not found in PATH", name)
 	}
 
-	if name == "docker" {
+	switch name {
+	case "docker":
 		return &DockerEngine{
 			Name:   "docker",
 			Socket: "docker://",
 		}, nil
-	}
-
-	if name == "podman" {
+	case "podman":
 		return &PodmanEngine{
 			Name:   "podman",
 			Socket: "podman://",
 		}, nil
+	default:
+		return nil, fmt.Errorf("container engine '%s' not recognised (docker and podman currently supported)", name)
 	}
-
-	return nil, fmt.Errorf("container engine '%s' not recognised (docker and podman currently supported)", name)
 }

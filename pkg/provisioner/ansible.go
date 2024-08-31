@@ -33,7 +33,7 @@ var defaultAnsibleConfig = AnsibleLocalProvisioner{
 		"localhost,",
 	},
 	EnvVars: map[string]string{
-		"ANSIBLE_ROLES_PATH": ".",
+		"ANSIBLE_ROLES_PATH": ".:/etc/ansible/roles",
 		"ANSIBLE_NOCOWS":     "True",
 	},
 	Playbook: "playbook.yml",

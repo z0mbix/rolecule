@@ -2,4 +2,4 @@
 - name: test
   hosts: localhost
   roles:
-    - .
+    - sshd
