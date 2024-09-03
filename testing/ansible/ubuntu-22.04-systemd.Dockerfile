@@ -7,7 +7,7 @@ RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list
 
 # hadolint ignore=DL3008
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends ca-certificates software-properties-common systemd curl cron less sudo bash iproute2 net-tools vim \
+  && apt-get install -y --no-install-recommends ca-certificates software-properties-common systemd curl cron gpg-agent less sudo bash iproute2 net-tools vim \
   && apt-add-repository -y ppa:ansible/ansible 1>/dev/null \
   && apt-get install -y --no-install-recommends ansible ansible-lint \
   && apt-get clean \
