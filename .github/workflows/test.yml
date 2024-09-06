@@ -17,7 +17,7 @@ jobs:
         go-version-file: go.mod
 
     - name: Test
-      run: go test -v ./... -coverprofile=/dev/null
+      run: go test -v ./... -coverprofile=cover.out
 
   test-windows:
     runs-on: windows-latest
@@ -30,5 +30,4 @@ jobs:
           go-version-file: go.mod
 
       - name: Test
-        run: go test -v ./... -coverprofile=/dev/null
-        
+        run: go test -v ./... -coverprofile=cover.out
