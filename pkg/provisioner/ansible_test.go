@@ -1,6 +1,7 @@
 package provisioner
 
 import (
+	"path/filepath"
 	"reflect"
 	"testing"
 )
@@ -47,7 +48,7 @@ func TestAnsibleProvisioner_GetCommand(t *testing.T) {
 				"local",
 				"--inventory",
 				"localhost,",
-				"tests/playbook.yml",
+				filepath.Join("tests", "playbook.yml"),
 			},
 		},
 	}
