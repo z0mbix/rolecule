@@ -183,8 +183,6 @@ If you have role dependencies in your `meta/main.yml` file using local roles in 
 as the current role, that directory will be mounted at `/etc/ansible/roles` in the container so
 ansible can find them.
 
-Support for using roles from a galaxy server is not yet implemented.
-
 ## Instances
 
 These are instances of each test scenario, allowing you can test different ansible tags with specific test files.
@@ -328,6 +326,7 @@ are discovered automatically by ansible.
 - ~~Test with podman on Mac~~
 - ~~Test docker on Linux~~
 - ~~Make provisioner output unbuffered~~
+- ~~Support installing role dependencies~~
 - Support installing ansible collections
 - Support testinfra verifier
 - ~~Support scenarios, making it possible to test a role with different tags~~
@@ -341,5 +340,5 @@ are discovered automatically by ansible.
 - ~~Test with docker desktop on Mac~~
 - ~~Test with podman desktop on Windows~~
 - ~~Test with docker desktop on Windows~~
-- Add goreleaser config to release to Github Releases
-- Add Github actions workflow to ~~build~~, ~~test~~ and release
+- ~~Add goreleaser config to release to Github Releases~~
+- ~~Add Github actions workflow to build, test and release~~
