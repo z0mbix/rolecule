@@ -1,0 +1,18 @@
+---
+provisioner:
+  name: ansible
+  extra_args:
+    - --diff
+    - --verbose
+  env:
+    ANSIBLE_NOCOLOR: False
+
+verifier:
+  name: goss
+  extra_args:
+    - --format
+    - tap
+
+instances:
+  - name: ubuntu-24.04
+    image: ubuntu-systemd:24.04

@@ -1,6 +1,3 @@
-/*
-Copyright © 2023 David Wooldridge <zombie@zombix.org>
-*/
 package cmd
 
 import (
@@ -21,8 +18,8 @@ var rootCmd = &cobra.Command{
 	Use:   "rolecule",
 	Short: "rolecule helps you test your ansible roles",
 	Long: `rolecule uses docker or podman to test your
-configuration management roles/recipes/modules in a systemd enabled container,
-then tests them with a verifier (goss/testinfra).`,
+ansible roles in a systemd enabled container,
+then tests them with a verifier (goss).`,
 
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		log.SetHandler(cli.New(os.Stderr))

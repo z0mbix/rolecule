@@ -11,7 +11,7 @@ file:
     owner: root
     group: root
     filetype: file
-    contains:
+    contents:
       - "test1"
   /tmp/test2.txt:
     exists: true
@@ -19,7 +19,7 @@ file:
     owner: root
     group: root
     filetype: file
-    contains:
+    contents:
       - "test2"
 package:
   git:

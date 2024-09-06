@@ -1,2 +1,5 @@
+dist/
+.idea/
+.vscode/
 rolecule
 rolecule.exe

@@ -1,0 +1,47 @@
+version: 2
+builds:
+  - env:
+      - CGO_ENABLED=0
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    flags:
+      - -trimpath
+    ldflags:
+       "-s -w -X github.com/z0mbix/rolecule/cmd.version={{.Version}}"
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    goarm:
+      - "7"
+    ignore:
+      - goos: darwin
+        goarch: "386"
+      - goos: windows
+        goarch: "arm"
+    binary: "{{ .ProjectName }}"
+nfpms:
+  - vendor: z0mbix
+    homepage: https://github.com/z0mbix/rolecule
+    maintainer: z0mbix <zombie@zombix.org>
+    description: |-
+      Rolecule is a small, simple tool to test your ansible roles
+    license: GPL-3.0 license
+    formats:
+      - apk
+      - deb
+      - rpm
+archives:
+  - id: "zip"
+    format: zip
+  - id: "tarball"
+    format: tar.gz
+checksum:
+  name_template: "{{ .ProjectName }}_{{ .Version }}_SHA256SUMS"
+  algorithm: sha256
+changelog:
+  use: github-native
+gomod:
+  proxy: true

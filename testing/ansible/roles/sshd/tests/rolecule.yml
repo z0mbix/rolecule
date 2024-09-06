@@ -1,6 +1,6 @@
 ---
 engine:
-  name: podman
+  name: docker
 
 provisioner:
   name: ansible
@@ -19,24 +19,19 @@ instances:
   - name: ubuntu-22.04
     image: ubuntu-systemd:22.04
     playbook: ubuntu/playbook.yml
+
   - name: ubuntu-22.04-build
     image: ubuntu-systemd:22.04
-    arch: amd64
     playbook: ubuntu/playbook.yml
     testfile: goss-build.yaml
     tags:
       - build
+
   - name: rockylinux-9.1
     image: rockylinux-systemd:9.1
+
   - name: rockylinux-9.1-build
     image: rockylinux-systemd:9.1
     testfile: goss-build.yaml
     tags:
       - build
-  - name: rockylinux-9.1-build
-    image: rockylinux-systemd:9.1
-    testfile: goss-build.yaml
-    tags:
-      - build
-    skip_tags:
-      - provision

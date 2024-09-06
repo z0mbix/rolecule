@@ -1,6 +1,3 @@
-/*
-Copyright © 2023 David Wooldridge <zombie@zombix.org>
-*/
 package cmd
 
 import (

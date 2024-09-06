@@ -1,27 +1,32 @@
 package provisioner
 
 import (
-	"fmt"
+	"path/filepath"
 	"strings"
 
 	"github.com/apex/log"
 	"golang.org/x/exp/maps"
 )
 
-type AnsibleLocalProvisioner struct {
-	Name      string
-	Command   string
-	Args      []string
-	ExtraArgs []string
-	SkipTags  []string
-	Tags      []string
-	EnvVars   map[string]string
-	Playbook  string
+type Dependencies struct {
+	Collections []string
+	LocalRoles  []string
+	GalaxyRoles []string
 }
 
-func (a AnsibleLocalProvisioner) String() string {
-	return a.Name
+type AnsibleLocalProvisioner struct {
+	Name         string
+	Command      string
+	Args         []string
+	ExtraArgs    []string
+	SkipTags     []string
+	Tags         []string
+	EnvVars      map[string]string
+	Playbook     string
+	Dependencies Dependencies
 }
+
+var ansibleRoleDir = "/etc/ansible/roles"
 
 var defaultAnsibleConfig = AnsibleLocalProvisioner{
 	Name:    "ansible",
@@ -33,7 +38,7 @@ var defaultAnsibleConfig = AnsibleLocalProvisioner{
 		"localhost,",
 	},
 	EnvVars: map[string]string{
-		"ANSIBLE_ROLES_PATH": ".",
+		"ANSIBLE_ROLES_PATH": ansibleRoleDir,
 		"ANSIBLE_NOCOWS":     "True",
 	},
 	Playbook: "playbook.yml",
@@ -75,7 +80,7 @@ func getAnsibleConfig(config Config) AnsibleLocalProvisioner {
 }
 
 func (a AnsibleLocalProvisioner) WithExtraArgs(args []string) Provisioner {
-	a.Tags = append(a.ExtraArgs, args...)
+	a.ExtraArgs = append(a.ExtraArgs, args...)
 	return a
 }
 
@@ -94,8 +99,30 @@ func (a AnsibleLocalProvisioner) WithPlaybook(playbook string) Provisioner {
 	return a
 }
 
+func (a AnsibleLocalProvisioner) WithLocalDependencies(dependencies []string) Provisioner {
+	a.Dependencies.LocalRoles = dependencies
+	return a
+}
+
+func (a AnsibleLocalProvisioner) WithGalaxyDependencies(dependencies []string) Provisioner {
+	a.Dependencies.GalaxyRoles = dependencies
+	return a
+}
+
+func (a AnsibleLocalProvisioner) GetDependencies() Dependencies {
+	return a.Dependencies
+}
+
+func (a AnsibleLocalProvisioner) GetInstallDependenciesCommand() (map[string]string, string, []string) {
+	log.Debugf("installing galaxy role(s):")
+	args := []string{"install", "--roles-path", ansibleRoleDir}
+	args = append(args, a.Dependencies.GalaxyRoles...)
+
+	return a.EnvVars, "ansible-galaxy", args
+}
+
 func (a AnsibleLocalProvisioner) GetCommand() (map[string]string, string, []string) {
-	playbookPath := fmt.Sprintf("tests/%s", a.Playbook)
+	playbookPath := filepath.Join(testDirectory, a.Playbook)
 	args := a.Args
 
 	for _, tag := range a.Tags {
@@ -110,4 +137,8 @@ func (a AnsibleLocalProvisioner) GetCommand() (map[string]string, string, []stri
 
 	args = append(args, playbookPath)
 	return a.EnvVars, a.Command, args
+}
+
+func (a AnsibleLocalProvisioner) String() string {
+	return a.Name
 }

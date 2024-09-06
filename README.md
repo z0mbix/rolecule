@@ -31,7 +31,7 @@ instances:
 
 ```
 
-Then, from the root of your role (e.g. [sshd](testing/ansible/roles/sshd/rolecule.yml)), run `rolecule test`, e.g.:
+Then, from the root of your role (e.g. [sshd](testing/ansible/roles/sshd/tests/rolecule.yml)), run `rolecule test`, e.g.:
 
 ```text
 » rolecule test
@@ -176,6 +176,14 @@ provisioner:
     - --diff
     - --verbose
 ```
+
+## Role dependencies
+
+If you have role dependencies in your `meta/main.yml` file using local roles in the same location
+as the current role, that directory will be mounted at `/etc/ansible/roles` in the container so
+ansible can find them.
+
+Support for using roles from a galaxy server is not yet implemented.
 
 ## Instances
 
