@@ -16,5 +16,5 @@ verifier:
     - tap
 
 instances:
-  - name: rockylinux-9.1
-    image: rockylinux-systemd:9.1
+  - name: ubuntu-24.04
+    image: ubuntu-systemd:24.04

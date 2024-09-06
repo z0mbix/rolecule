@@ -1,0 +1,8 @@
+- name: output the hostname
+  ansible.builtin.debug:
+    msg: "hostname is {{ ansible_hostname }}"
+
+- name: install index.html
+  ansible.builtin.copy:
+    src: index.html
+    dest: /var/www/html/index.html

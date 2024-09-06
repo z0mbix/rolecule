@@ -1,0 +1,6 @@
+[env]
+mise.path = ["./bin"]
+GO_VERSION = "{{exec(command='grep \"^go 1\\.[0-9]\\+\\.[0-9]\\+$\" go.mod | cut -f2 -d\" \"')}}"
+
+[tools]
+golang = "{{exec(command='grep \"^go 1\\.[0-9]\\+\\.[0-9]\\+$\" go.mod | cut -f2 -d\" \"')}}"

@@ -1,14 +1,15 @@
 FROM ubuntu:22.04
 
-ENV container docker
-ENV DEBIAN_FRONTEND noninteractive
+ENV container=docker
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list
 
 # hadolint ignore=DL3008
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends ca-certificates systemd curl cron python3 python3-pip sudo bash iproute2 net-tools vim \
-  && python3 -m pip install ansible ansible-core \
+  && apt-get install -y --no-install-recommends ca-certificates software-properties-common systemd curl cron gpg-agent less sudo bash iproute2 net-tools python3-apt vim \
+  && apt-add-repository -y ppa:ansible/ansible 1>/dev/null \
+  && apt-get install -y --no-install-recommends ansible ansible-lint \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -34,7 +35,7 @@ RUN curl -sSL https://github.com/goss-org/goss/releases/latest/download/goss-lin
 
 WORKDIR /
 RUN systemctl set-default multi-user.target
-ENV init /lib/systemd/systemd
+ENV init=/lib/systemd/systemd
 VOLUME [ "/sys/fs/cgroup" ]
 
 ENTRYPOINT ["/lib/systemd/systemd"]

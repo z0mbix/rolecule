@@ -1,6 +1,3 @@
-/*
-Copyright © 2022 David Wooldridge <zombie@zombix.org>
-*/
 package cmd
 
 import (
@@ -33,11 +30,17 @@ var convergeCmd = &cobra.Command{
 func converge(cfg *config.Config) error {
 	for _, instance := range cfg.Instances {
 		if !instance.Engine.Exists(instance.Name) {
-			log.Errorf("container does not exist, creating...")
 			err := create(cfg)
 			if err != nil {
 				log.Error(err.Error())
 				continue
+			}
+		}
+
+		if len(instance.Provisioner.GetDependencies().GalaxyRoles) > 0 {
+			log.Infof("preparing container %s", instance.Name)
+			if err := instance.Prepare(); err != nil {
+				log.Error(err.Error())
 			}
 		}
 

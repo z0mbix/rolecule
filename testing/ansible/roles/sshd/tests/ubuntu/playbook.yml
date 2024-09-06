@@ -1,5 +1,14 @@
 ---
+- name: update apt cache
+  hosts: localhost
+  tasks:
+    - name: update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+      tags:
+        - always
+
 - name: test
   hosts: localhost
   roles:
-    - .
+    - sshd

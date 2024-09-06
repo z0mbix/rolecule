@@ -1,0 +1,12 @@
+---
+- name: manage swappiness
+  ansible.builtin.sysctl:
+    name: vm.swappiness
+    value: "{{ ansible_swappiness }}"
+    state: present
+  tags:
+      - provision
+
+- name: output swappiness
+  ansible.builtin.debug:
+    msg: "vm.swappiness is {{ ansible_swappiness }}"

@@ -2,6 +2,7 @@ package instance
 
 import (
 	"fmt"
+	"path/filepath"
 
 	"github.com/apex/log"
 	"github.com/z0mbix/rolecule/pkg/container"
@@ -23,22 +24,25 @@ type Config struct {
 }
 
 type Instance struct {
-	Name     string
-	Image    string
-	Arch     string
-	Args     []string
-	Playbook string
-	TestFile string
-	SkipTags []string
-	Tags     []string
-	WorkDir  string
+	Name       string
+	Image      string
+	Arch       string
+	Args       []string
+	Playbook   string
+	TestFile   string
+	SkipTags   []string
+	Tags       []string
+	WorkDir    string
+	RoleName   string
+	RoleDir    string
+	RoleMounts map[string]string
 	container.Engine
 	Provisioner provisioner.Provisioner
 	Verifier    verifier.Verifier
 }
 
 func (i *Instance) Create() (string, error) {
-	workDir := "/src"
+	workDir := filepath.Join("/etc/ansible/roles", i.RoleName)
 	instanceArgs := []string{
 		"run",
 		"--privileged",
@@ -49,9 +53,13 @@ func (i *Instance) Create() (string, error) {
 		"--tmpfs", "/run/lock",
 		"--tmpfs", "/var/lib/docker",
 		"--cgroupns", "host",
+		"--workdir", workDir,
 		"--volume", "/sys/fs/cgroup:/sys/fs/cgroup:rw",
 		"--volume", fmt.Sprintf("%s:%s", i.WorkDir, workDir),
-		"--workdir", workDir,
+	}
+
+	for src, dst := range i.RoleMounts {
+		instanceArgs = append(instanceArgs, "--volume", fmt.Sprintf("%s:%s", src, dst))
 	}
 
 	if i.Arch != "" {
@@ -68,6 +76,11 @@ func (i *Instance) Create() (string, error) {
 		return output, err
 	}
 	return output, nil
+}
+
+func (i *Instance) Prepare() error {
+	env, cmd, args := i.Provisioner.GetInstallDependenciesCommand()
+	return i.Exec(i.Name, env, cmd, args)
 }
 
 func (i *Instance) Converge() error {

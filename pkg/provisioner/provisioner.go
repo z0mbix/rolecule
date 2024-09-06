@@ -5,10 +5,14 @@ import (
 )
 
 type Provisioner interface {
+	GetInstallDependenciesCommand() (map[string]string, string, []string)
 	GetCommand() (map[string]string, string, []string)
 	WithSkipTags([]string) Provisioner
 	WithTags([]string) Provisioner
 	WithPlaybook(string) Provisioner
+	GetDependencies() Dependencies
+	WithLocalDependencies([]string) Provisioner
+	WithGalaxyDependencies([]string) Provisioner
 	String() string
 }
 
@@ -28,3 +32,5 @@ func NewProvisioner(config Config) (Provisioner, error) {
 
 	return nil, fmt.Errorf("provisioner '%s' not recognised", config.Name)
 }
+
+var testDirectory = "tests"
