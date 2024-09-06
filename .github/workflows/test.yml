@@ -3,6 +3,8 @@ run-name: Test ${{ github.ref_name }} triggered by @${{ github.actor }}
 
 on:
   push:
+    branches:
+      - main
   pull_request:
 
 jobs:
