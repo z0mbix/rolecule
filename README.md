@@ -4,13 +4,13 @@
 
 `rolecule` is a simple tool to help you test your ansible roles by creating systemd enabled containers with either docker or podman, then converging them with ansible. We're basically treating containers as mini VMs.
 
-Once converged, it will run a verifier to test it all. Currently, the only supported provisioner is [goss](https://github.com/goss-org/goss), but [testinfra](https://testinfra.readthedocs.io/) will be added soon.
+Once converged, it will run a verifier to test it all. Currently, the only supported provisioner is [goss](https://github.com/goss-org/goss), but others may be added at some point in the future.
 
-This should speed up testing your roles if you're using local or remote virtual machines.
+This should speed up testing your roles if you're currently using local or remote virtual machines.
 
 ## Usage
 
-First, you need to create a simple `rolecule.yml` file in the root of your role/module/recipe, e.g.:
+First, you need to create a simple `rolecule.yml` file in either the root of your role or in the `tests` directory, e.g.:
 
 ```yaml
 ---
@@ -180,12 +180,12 @@ provisioner:
 ## Role dependencies
 
 If you have role dependencies in your `meta/main.yml` file using local roles in the same location
-as the current role, that directory will be mounted at `/etc/ansible/roles` in the container so
+as the current role, they will be mounted at `/etc/ansible/roles` in the container so
 ansible can find them.
 
 ## Instances
 
-These are instances of each test scenario, allowing you can test different ansible tags with specific test files.
+These are instances of each test scenario, allowing you to test different ansible tags with specific test files.
 
 A simple example for a single Ubuntu test would be:
 
@@ -239,6 +239,9 @@ instances:
 ```
 
 If you don't specify the arch, it will use the current host's architecture
+
+Please note that id you do want to test using a different architecture to the host your are running it on,
+you will need to have the relevant container image for that architecture.
 
 ## Verifiers
 
