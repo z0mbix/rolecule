@@ -2,7 +2,9 @@ package instance
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/apex/log"
 	"github.com/z0mbix/rolecule/pkg/container"
@@ -15,6 +17,7 @@ type Instances []Instance
 type Config struct {
 	Name     string   `mapstructure:"name"`
 	Image    string   `mapstructure:"image"`
+	Volumes  []string `mapstructure:"volumes"`
 	Arch     string   `mapstructure:"arch"`
 	Args     []string `mapstructure:"args"`
 	Playbook string   `mapstructure:"playbook"`
@@ -36,6 +39,7 @@ type Instance struct {
 	RoleName   string
 	RoleDir    string
 	RoleMounts map[string]string
+	Volumes    []string
 	container.Engine
 	Provisioner provisioner.Provisioner
 	Verifier    verifier.Verifier
@@ -60,6 +64,26 @@ func (i *Instance) Create() (string, error) {
 
 	for src, dst := range i.RoleMounts {
 		instanceArgs = append(instanceArgs, "--volume", fmt.Sprintf("%s:%s", src, dst))
+	}
+
+	for _, volume := range i.Volumes {
+		volume = strings.TrimSpace(volume)
+		parts := strings.SplitN(volume, ":", 2)
+
+		if len(parts) != 2 || parts[0] == "" || parts[1] == "" {
+			return "", fmt.Errorf("invalid volume format, expected 'hostPath:containerPath', got: %s", volume)
+		}
+
+		_, err := os.Stat(parts[0])
+		if err != nil {
+			if os.IsNotExist(err) {
+				return "", fmt.Errorf("host path does not exist: %s", parts[0])
+			}
+			return "", fmt.Errorf("error accessing path: %s, error: %w", parts[0], err)
+		}
+
+		log.Debugf("mounting volume: %s -> %s", parts[0], parts[1])
+		instanceArgs = append(instanceArgs, "--volume", fmt.Sprintf("%s:%s", parts[0], parts[1]))
 	}
 
 	if i.Arch != "" {

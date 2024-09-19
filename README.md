@@ -202,6 +202,8 @@ instances:
   - name: ubuntu-22.04
     image: ubuntu-systemd:22.04
     playbook: ubuntu/playbook.yml
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
   - name: ubuntu-22.04-build
     image: ubuntu-systemd:22.04
     arch: amd64
