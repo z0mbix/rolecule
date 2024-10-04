@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"os"
+
 	"github.com/apex/log"
 	"github.com/spf13/cobra"
 	"github.com/z0mbix/rolecule/pkg/config"
@@ -38,6 +40,7 @@ func create(cfg *config.Config) error {
 		output, err := instance.Create()
 		if err != nil {
 			log.Error(err.Error())
+			os.Exit(1)
 		}
 		log.Debug(output)
 	}

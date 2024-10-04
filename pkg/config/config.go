@@ -59,7 +59,7 @@ func Get() (*Config, error) {
 	log.Debugf("config file: %+v", configValues)
 
 	if configValues.Engine.Name == "" {
-		log.Debugf("enginer not specified, using default engine: %s", defaultEngine)
+		log.Debugf("engine not specified, using default engine: %s", defaultEngine)
 		configValues.Engine.Name = defaultEngine
 	}
 	engine, err := container.NewEngine(configValues.Engine.Name)
@@ -150,6 +150,7 @@ func Get() (*Config, error) {
 			Provisioner: iProvisioner,
 			Verifier:    iVerifier,
 			RoleMounts:  roleMounts,
+			Volumes:     i.Volumes,
 		}
 
 		instances = append(instances, instanceConfig)
