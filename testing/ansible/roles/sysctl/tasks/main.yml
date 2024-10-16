@@ -5,7 +5,7 @@
     value: "{{ ansible_swappiness }}"
     state: present
   tags:
-      - provision
+    - provision
 
 - name: output swappiness
   ansible.builtin.debug:
