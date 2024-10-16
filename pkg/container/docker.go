@@ -2,6 +2,7 @@ package container
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/apex/log"
@@ -33,8 +34,10 @@ func (p *DockerEngine) Exec(containerName string, envVars map[string]string, cmd
 	}
 
 	for k, v := range envVars {
+		// Expand environment variables within the value if they exist using os.ExpandEnv
+		expandedValue := os.ExpandEnv(v)
 		execArgs = append(execArgs, "--env")
-		execArgs = append(execArgs, fmt.Sprintf("%s=%s", k, v))
+		execArgs = append(execArgs, fmt.Sprintf("%s=%s", k, expandedValue))
 	}
 
 	execArgs = append(execArgs, containerName)
