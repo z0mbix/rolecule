@@ -2,6 +2,7 @@ package container
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/apex/log"
 	"github.com/z0mbix/rolecule/pkg/command"
@@ -36,7 +37,7 @@ func (p *PodmanEngine) Exec(containerName string, envVars map[string]string, cmd
 	if len(envVars) > 0 {
 		for k, v := range envVars {
 			execArgs = append(execArgs, "--env")
-			execArgs = append(execArgs, fmt.Sprintf("%s=%s", k, v))
+			execArgs = append(execArgs, fmt.Sprintf("%s=%s", k, os.ExpandEnv(v)))
 		}
 	}
 

@@ -29,15 +29,12 @@ func (p *DockerEngine) Run(image string, args []string) (string, error) {
 }
 
 func (p *DockerEngine) Exec(containerName string, envVars map[string]string, cmd string, args []string) error {
-	execArgs := []string{
-		"exec",
-	}
+	execArgs := []string{"exec"}
 
 	for k, v := range envVars {
 		// Expand environment variables within the value if they exist using os.ExpandEnv
-		expandedValue := os.ExpandEnv(v)
 		execArgs = append(execArgs, "--env")
-		execArgs = append(execArgs, fmt.Sprintf("%s=%s", k, expandedValue))
+		execArgs = append(execArgs, fmt.Sprintf("%s=%s", k, os.ExpandEnv(v)))
 	}
 
 	execArgs = append(execArgs, containerName)
