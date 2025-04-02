@@ -3,7 +3,6 @@ package instance
 import (
 	"fmt"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/apex/log"
@@ -46,7 +45,8 @@ type Instance struct {
 }
 
 func (i *Instance) Create() (string, error) {
-	workDir := filepath.Join("/etc/ansible/roles", i.RoleName)
+	rolesPath := []string{"/etc/ansible/roles", i.RoleName}
+	workDir := strings.Join(rolesPath, "/")
 	instanceArgs := []string{
 		"run",
 		"--privileged",
