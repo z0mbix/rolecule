@@ -86,7 +86,7 @@ func TestCreate(t *testing.T) {
 				return afero.WriteFile(fs, filepath.Join(testsDir, "rolecule.yml"), []byte("existing content"), 0644)
 			},
 			wantErr:    true,
-			wantErrMsg: "tests/rolecule.yml file already exists",
+			wantErrMsg: filepath.Join(testsDir, "rolecule.yml") + " file already exists",
 		},
 	}
 
