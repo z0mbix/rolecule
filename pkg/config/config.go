@@ -41,7 +41,7 @@ type Config struct {
 }
 
 func Get() (*Config, error) {
-	// config file is 'rolecule.yml|rolecule.yaml' in the current directory
+	// config file is 'rolecule.yml|rolecule.yaml' in the current or 'tests' directory
 	viper.SetEnvPrefix(strings.ToUpper(AppName))
 	viper.SetConfigName(AppName)
 	viper.SetConfigType("yaml")
@@ -51,7 +51,7 @@ func Get() (*Config, error) {
 	if err := viper.ReadInConfig(); err != nil {
 		var configFileNotFoundError viper.ConfigFileNotFoundError
 		if errors.As(err, &configFileNotFoundError) {
-			log.Fatalf("config file not found: %s.yml", AppName)
+			return nil, fmt.Errorf("config file not found")
 		}
 	}
 

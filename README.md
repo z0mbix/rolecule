@@ -77,8 +77,8 @@ Count: 12, Failed: 0, Skipped: 0
 ```text
 » rolecule --help
 rolecule uses docker or podman to test your
-configuration management roles/recipes/modules in a systemd enabled container,
-then tests them with a verifier (goss/testinfra).
+ansible roles in a systemd enabled container,
+then tests them with a verifier (goss).
 
 Usage:
   rolecule [command]
@@ -88,11 +88,14 @@ Available Commands:
   converge    Run your configuration management tool to converge the container(s)
   create      Create a new container(s) to test the role in
   destroy     Destroy everything
+  exec        Execute a command in a container
   help        Help about any command
+  init        Initialise the project with a tests directory and a rolecule.yml file
   list        List the running containers for this role/module/recipe
   shell       Open a shell in a container
-  test        Create the container(s), converge them, test them, then clean up
+  test        Create the container(s), converge them, and test them
   verify      Verify your containers are configured how you expect
+  version     Show version
 
 Flags:
   -d, --debug   enable debug output
