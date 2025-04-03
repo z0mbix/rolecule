@@ -1,8 +1,10 @@
 package config
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
+	"html/template"
 	"os"
 	"path/filepath"
 	"strings"
@@ -10,6 +12,7 @@ import (
 	"github.com/z0mbix/rolecule/pkg/filesystem"
 
 	"github.com/apex/log"
+	"github.com/spf13/afero"
 	"github.com/spf13/viper"
 	"github.com/z0mbix/rolecule/pkg/container"
 	"github.com/z0mbix/rolecule/pkg/instance"
@@ -20,6 +23,8 @@ import (
 var (
 	AppName       = "rolecule"
 	defaultEngine = "docker"
+	testsDir      = "tests"
+	appFs         = afero.NewOsFs()
 )
 
 type configFile struct {
@@ -41,7 +46,7 @@ func Get() (*Config, error) {
 	viper.SetConfigName(AppName)
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
-	viper.AddConfigPath("tests")
+	viper.AddConfigPath(testsDir)
 
 	if err := viper.ReadInConfig(); err != nil {
 		var configFileNotFoundError viper.ConfigFileNotFoundError
@@ -171,23 +176,68 @@ func generateContainerName(name, roleName string) string {
 }
 
 // Create creates a rolecule.yml file in the current directory
-func Create(engine, provisioner, verifier string) error {
-	// TODO: yeah, actually implement this
-	log.Debugf("creating config with: %s/%s/%s", engine, provisioner, verifier)
+func Create(engine string) error {
+	log.Debugf("creating config with %s engine", engine)
 
-	return nil
-}
+	// Ensure the tests directory exists
+	if err := appFs.MkdirAll(testsDir, 0755); err != nil {
+		return fmt.Errorf("failed to create tests directory: %w", err)
+	}
 
-var roleculeFileTemplate = `engine:
-  name: {{.Engine}}
+	// Define template for config file with conditional engine section
+	// The template handles whitespace carefully to avoid extra blank lines
+	configTemplate := `{{- if ne .Engine "docker" }}
+engine:
+  name: {{ .Engine }}
 
+{{ end -}}
 provisioner:
-  name: ansible
+  name: {{ .Provisioner }}
 
 verifier:
-  name: goss
+  name: {{ .Verifier }}
 
 instances:
   - name: ubuntu-24.04
     image: ubuntu-systemd:24.04
 `
+
+	tmpl, err := template.New("config").Parse(configTemplate)
+	if err != nil {
+		return fmt.Errorf("failed to create template: %w", err)
+	}
+
+	data := struct {
+		Engine      string
+		Provisioner string
+		Verifier    string
+	}{
+		Engine:      engine,
+		Provisioner: "ansible",
+		Verifier:    "goss",
+	}
+
+	var buf bytes.Buffer
+	if err := tmpl.Execute(&buf, data); err != nil {
+		return fmt.Errorf("failed to execute template: %w", err)
+	}
+
+	configPath := filepath.Join(testsDir, "rolecule.yml")
+
+	// Check if file exists using Afero
+	exists, err := afero.Exists(appFs, configPath)
+	if err != nil {
+		return fmt.Errorf("failed to check if file exists: %w", err)
+	}
+	if exists {
+		return fmt.Errorf("%s file already exists", configPath)
+	}
+
+	// Write file using Afero
+	if err := afero.WriteFile(appFs, configPath, buf.Bytes(), 0644); err != nil {
+		return fmt.Errorf("failed to write config file: %w", err)
+	}
+
+	log.Infof("created %s", configPath)
+	return nil
+}

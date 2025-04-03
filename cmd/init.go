@@ -7,24 +7,19 @@ import (
 )
 
 var (
-	engineName      string
-	provisionerName string
-	verifierName    string
+	engineName string
 )
 
 func init() {
 	rootCmd.AddCommand(initCmd)
-	initCmd.Flags().StringVarP(&engineName, "engine", "e", "podman", "Specify the container engine to use (podman or docker)")
-	initCmd.Flags().StringVarP(&provisionerName, "provisioner", "p", "ansible", "Specify the provisioner to use")
-	initCmd.Flags().StringVarP(&verifierName, "verifier", "v", "goss", "Specify the verifier to use")
+	initCmd.Flags().StringVarP(&engineName, "engine", "e", "docker", "Specify the container engine to use (docker or podman)")
 }
 
 var initCmd = &cobra.Command{
-	Use:    "init",
-	Hidden: true,
-	Short:  "Initialise the project with a nice new rolecule.yml file",
+	Use:   "init",
+	Short: "Initialise the project with a tests directory and a rolecule.yml file",
 	Run: func(cmd *cobra.Command, args []string) {
-		err := config.Create(engineName, provisionerName, verifierName)
+		err := config.Create(engineName)
 		if err != nil {
 			log.Fatal(err.Error())
 		}
