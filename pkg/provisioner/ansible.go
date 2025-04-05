@@ -1,7 +1,6 @@
 package provisioner
 
 import (
-	"path/filepath"
 	"strings"
 
 	"github.com/apex/log"
@@ -122,7 +121,8 @@ func (a AnsibleLocalProvisioner) GetInstallDependenciesCommand() (map[string]str
 }
 
 func (a AnsibleLocalProvisioner) GetCommand() (map[string]string, string, []string) {
-	playbookPath := filepath.Join(testDirectory, a.Playbook)
+	testPlaybook := []string{testDirectory, a.Playbook}
+	playbookPath := strings.Join(testPlaybook, "/")
 	args := a.Args
 
 	for _, tag := range a.Tags {
