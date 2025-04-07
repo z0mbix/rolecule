@@ -1,8 +1,8 @@
 package provisioner
 
 import (
-	"path/filepath"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -48,7 +48,7 @@ func TestAnsibleProvisioner_GetCommand(t *testing.T) {
 				"local",
 				"--inventory",
 				"localhost,",
-				filepath.Join("tests", "playbook.yml"),
+				strings.Join([]string{"tests", "playbook.yml"}, "/"),
 			},
 		},
 	}
@@ -467,7 +467,7 @@ func TestAnsibleLocalProvisioner_GetCommand(t *testing.T) {
 				"local",
 				"--inventory",
 				"localhost,",
-				filepath.Join("tests", "playbook.yml"),
+				strings.Join([]string{"tests", "playbook.yml"}, "/"),
 			},
 		},
 	}
