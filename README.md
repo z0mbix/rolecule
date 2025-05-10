@@ -184,7 +184,7 @@ provisioner:
 
 If you have role dependencies in your `meta/main.yml` file using local roles in the same location
 as the current role, they will be mounted at `/etc/ansible/roles` in the container so
-ansible can find them. Currently , only local roles and ansible galaxy roles are supported.
+ansible can find them. Currently, only local roles and ansible galaxy roles are supported.
 
 ## Instances
 
