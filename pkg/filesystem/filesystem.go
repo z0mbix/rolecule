@@ -18,3 +18,13 @@ func FileExists(path string) bool {
 	}
 	return false
 }
+
+// ReadFile reads the entire file at path and returns its contents
+func ReadFile(path string) ([]byte, error) {
+	return os.ReadFile(path)
+}
+
+// GetCurrentDir returns the current working directory
+func GetCurrentDir() (string, error) {
+	return os.Getwd()
+}

@@ -184,7 +184,7 @@ provisioner:
 
 If you have role dependencies in your `meta/main.yml` file using local roles in the same location
 as the current role, they will be mounted at `/etc/ansible/roles` in the container so
-ansible can find them.
+ansible can find them. Currently, only local roles and ansible galaxy roles are supported.
 
 ## Instances
 
@@ -245,7 +245,7 @@ instances:
 
 If you don't specify the arch, it will use the current host's architecture
 
-Please note that id you do want to test using a different architecture to the host your are running it on,
+Please note that if you do want to test using a different architecture to the host your are running it on,
 you will need to have the relevant container image for that architecture.
 
 ## Verifiers
@@ -335,12 +335,11 @@ are discovered automatically by ansible.
 - ~~Test docker on Linux~~
 - ~~Make provisioner output unbuffered~~
 - ~~Support installing role dependencies~~
-- Support installing ansible collections
-- Support testinfra verifier
+- Support installing ansible collections?
 - ~~Support scenarios, making it possible to test a role with different tags~~
 - ~~Support using custom provisioner command/args/env vars from rolecule.yml~~
-- ~~Support using custom verifier command/args/env vars from rolecule.yml~~/%s
-- Implement `rolecule init` to generate a rolecule.yml file (use current directory structure to determine configuration management provisioner)
+- ~~Support using custom verifier command/args/env vars from rolecule.yml~~
+- ~~Implement `rolecule init` to generate a rolecule.yml file (use current directory structure to determine configuration management provisioner)~~
 - ~~Implement `rolecule list` subcommand to list all running containers~~
 - ~~Write some tests :/~~
 - ~~Document what is required for a container image~~
