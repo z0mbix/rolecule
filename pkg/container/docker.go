@@ -29,7 +29,11 @@ func (p *DockerEngine) Run(image string, args []string) (string, error) {
 }
 
 func (p *DockerEngine) Exec(containerName string, envVars map[string]string, cmd string, args []string) error {
-	execArgs := []string{"exec", "--interactive", "--tty"}
+	execArgs := []string{"exec"}
+
+	if os.Getenv("ROLECULE_TTY_ENABLED") != "false" {
+		execArgs = append(execArgs, "--interactive", "--tty")
+	}
 
 	for k, v := range envVars {
 		// Expand environment variables within the value if they exist using os.ExpandEnv
