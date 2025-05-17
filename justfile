@@ -13,6 +13,10 @@ clean:
 build:
 	go build -o bin/rolecule
 
+# Build the binary when go files change
+watch-build:
+    fd .go | entr -c just build
+
 # Configure your host to use this repo
 setup:
 	mise trust

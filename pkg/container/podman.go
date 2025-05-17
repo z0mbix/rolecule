@@ -28,7 +28,7 @@ func (p *PodmanEngine) Run(image string, args []string) (string, error) {
 }
 
 func (p *PodmanEngine) Exec(containerName string, envVars map[string]string, cmd string, args []string) error {
-	execArgs := []string{"exec", "--interactive", "--tty"}
+	execArgs := []string{"exec"}
 
 	if len(envVars) > 0 {
 		for k, v := range envVars {
