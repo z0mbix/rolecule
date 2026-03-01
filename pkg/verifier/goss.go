@@ -3,7 +3,7 @@ package verifier
 import (
 	"fmt"
 
-	"github.com/apex/log"
+	"github.com/z0mbix/cliout"
 )
 
 type GossVerifier struct {
@@ -43,11 +43,11 @@ var defaultGossConfig = GossVerifier{
 func getGossConfig(config Config) GossVerifier {
 	gossConfig := defaultGossConfig
 	if config.TestFile != "" {
-		log.Debugf("using gossfile from config file: %v", config.TestFile)
+		cliout.Debugf("using gossfile from config file: %v", config.TestFile)
 		gossConfig.TestFile = config.TestFile
 	}
 	if len(config.ExtraArgs) > 0 {
-		log.Debugf("using goss extra args from config file: %v", config.ExtraArgs)
+		cliout.Debugf("using goss extra args from config file: %v", config.ExtraArgs)
 		gossConfig.ExtraArgs = config.ExtraArgs
 	}
 

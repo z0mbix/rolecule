@@ -1,15 +1,15 @@
 package config
 
 import (
+	"bytes"
 	"path/filepath"
 	"strings"
 	"testing"
 
-	"github.com/apex/log"
-	"github.com/apex/log/handlers/memory"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/require"
 	"github.com/tj/assert"
+	"github.com/z0mbix/cliout"
 )
 
 func Test_generateContainerName(t *testing.T) {
@@ -49,9 +49,10 @@ func Test_generateContainerName(t *testing.T) {
 }
 
 func TestCreate(t *testing.T) {
-	// Create memory handler for log testing
-	handler := memory.New()
-	log.SetHandler(handler)
+	// Set up cliout to capture output in a buffer
+	var logBuf bytes.Buffer
+	cliout.Default().SetWriter(&logBuf)
+	cliout.Default().SetColorEnabled(false)
 
 	tests := []struct {
 		name              string
@@ -92,8 +93,8 @@ func TestCreate(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// Reset log entries
-			handler.Entries = nil
+			// Reset log buffer
+			logBuf.Reset()
 
 			// Save original filesystem and restore after test
 			originalFs := appFs
@@ -156,17 +157,12 @@ func TestCreate(t *testing.T) {
 			assert.Contains(t, string(content), "verifier:\n  name: goss")
 			assert.Contains(t, string(content), "instances:\n  - name: ubuntu-24.04\n    image: ubuntu-systemd:24.04")
 
-			// Check log output
-			found := false
-			for _, entry := range handler.Entries {
-				if entry.Level == log.InfoLevel &&
-					strings.Contains(entry.Message, "created") &&
-					strings.Contains(entry.Message, configPath) {
-					found = true
-					break
-				}
-			}
-			assert.True(t, found, "Expected log message about file creation not found")
+			// Check log output - verify the "created" message was logged
+			logOutput := logBuf.String()
+			assert.True(t,
+				strings.Contains(logOutput, "created") && strings.Contains(logOutput, configPath),
+				"Expected log message about file creation not found in output: %q", logOutput,
+			)
 		})
 	}
 }

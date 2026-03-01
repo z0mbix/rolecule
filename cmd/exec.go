@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/apex/log"
 	"github.com/spf13/cobra"
+	"github.com/z0mbix/cliout"
 	"github.com/z0mbix/rolecule/pkg/actions"
 	"github.com/z0mbix/rolecule/pkg/config"
 )
@@ -27,12 +27,12 @@ Example:
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.Get()
 		if err != nil {
-			log.Fatal(err.Error())
+			cliout.Fatal(err.Error())
 		}
 
 		err = actions.Exec(cfg.Instances, execContainerName, args[0], args[1:])
 		if err != nil {
-			log.Fatal(err.Error())
+			cliout.Fatal(err.Error())
 		}
 	},
 }

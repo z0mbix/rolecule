@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/apex/log"
+	"github.com/z0mbix/cliout"
 )
 
 func convertEnvVarMapToSlice(envVars map[string]string) []string {
@@ -25,7 +25,7 @@ func Execute(name string, args ...string) (int, string, error) {
 func ExecuteWithEnvVars(env map[string]string, name string, args ...string) (int, string, error) {
 	cmd := exec.Command(name, args...)
 	envVars := convertEnvVarMapToSlice(env)
-	log.Debugf("executing command: %s with env vars: %+v", cmd, envVars)
+	cliout.Debugf("executing command: %s with env vars: %+v", cmd, envVars)
 	cmd.Env = envVars
 	out, err := cmd.CombinedOutput()
 	exitCode := cmd.ProcessState.ExitCode()
@@ -38,7 +38,7 @@ func ExecuteWithEnvVars(env map[string]string, name string, args ...string) (int
 
 func Interactive(name string, args ...string) (int, error) {
 	cmd := exec.Command(name, args...)
-	log.Debugf("executing interactive command: %s", cmd)
+	cliout.Debugf("executing interactive command: %s", cmd)
 	cmd.Stdout = os.Stdout
 	cmd.Stdin = os.Stdin
 	cmd.Stderr = os.Stderr

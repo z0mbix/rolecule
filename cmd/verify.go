@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/apex/log"
 	"github.com/spf13/cobra"
+	"github.com/z0mbix/cliout"
 	"github.com/z0mbix/rolecule/pkg/config"
 )
 
@@ -17,19 +17,19 @@ var verifyCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.Get()
 		if err != nil {
-			log.Fatal(err.Error())
+			cliout.Fatal(err.Error())
 		}
 
 		err = verify(cfg)
 		if err != nil {
-			log.Fatal(err.Error())
+			cliout.Fatal(err.Error())
 		}
 	},
 }
 
 func verify(cfg *config.Config) error {
 	for _, instance := range cfg.Instances {
-		log.Infof("verifying container %s with %s (%s)", instance.Name, instance.Verifier, instance.Verifier.GetTestFile())
+		cliout.Infof("verifying container %s with %s (%s)", instance.Name, instance.Verifier, instance.Verifier.GetTestFile())
 		if err := instance.Verify(); err != nil {
 			return err
 		}

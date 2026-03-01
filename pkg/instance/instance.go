@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/apex/log"
+	"github.com/z0mbix/cliout"
 	"github.com/z0mbix/rolecule/pkg/container"
 	"github.com/z0mbix/rolecule/pkg/provisioner"
 	"github.com/z0mbix/rolecule/pkg/verifier"
@@ -82,7 +82,7 @@ func (i *Instance) Create() (string, error) {
 			return "", fmt.Errorf("error accessing path: %s, error: %w", parts[0], err)
 		}
 
-		log.Debugf("mounting volume: %s -> %s", parts[0], parts[1])
+		cliout.Debugf("mounting volume: %s -> %s", parts[0], parts[1])
 		instanceArgs = append(instanceArgs, "--volume", fmt.Sprintf("%s:%s", parts[0], parts[1]))
 	}
 
@@ -94,7 +94,7 @@ func (i *Instance) Create() (string, error) {
 
 	args := append(instanceArgs, i.Args...)
 
-	log.Debugf("%+v", args)
+	cliout.Debugf("%+v", args)
 	output, err := i.Run(i.Image, args)
 	if err != nil {
 		return output, err

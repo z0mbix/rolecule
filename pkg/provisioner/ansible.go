@@ -3,7 +3,7 @@ package provisioner
 import (
 	"strings"
 
-	"github.com/apex/log"
+	"github.com/z0mbix/cliout"
 	"golang.org/x/exp/maps"
 )
 
@@ -46,17 +46,17 @@ var defaultAnsibleConfig = AnsibleLocalProvisioner{
 func getAnsibleConfig(config Config) AnsibleLocalProvisioner {
 	ansibleConfig := defaultAnsibleConfig
 	if config.Command != "" {
-		log.Debugf("using ansible command from config file: %v", config.Command)
+		cliout.Debugf("using ansible command from config file: %v", config.Command)
 		ansibleConfig.Command = config.Command
 	}
 
 	if len(config.Args) > 0 {
-		log.Debugf("using ansible args from config file: %v", config.Args)
+		cliout.Debugf("using ansible args from config file: %v", config.Args)
 		ansibleConfig.Args = config.Args
 	}
 
 	if len(config.ExtraArgs) > 0 {
-		log.Debugf("using ansible extra args from config file: %v", config.ExtraArgs)
+		cliout.Debugf("using ansible extra args from config file: %v", config.ExtraArgs)
 		ansibleConfig.Args = append(ansibleConfig.Args, config.ExtraArgs...)
 	}
 
@@ -66,12 +66,12 @@ func getAnsibleConfig(config Config) AnsibleLocalProvisioner {
 		for k, v := range config.EnvVars {
 			uppercaseEnv[strings.ToUpper(k)] = v
 		}
-		log.Debugf("using extra ansible env from config file: %v", uppercaseEnv)
+		cliout.Debugf("using extra ansible env from config file: %v", uppercaseEnv)
 		maps.Copy(ansibleConfig.EnvVars, uppercaseEnv)
 	}
 
 	if config.Playbook != "" {
-		log.Debugf("using ansible playbook from config file: %v", config.Playbook)
+		cliout.Debugf("using ansible playbook from config file: %v", config.Playbook)
 		ansibleConfig.Playbook = config.Playbook
 	}
 
@@ -113,7 +113,7 @@ func (a AnsibleLocalProvisioner) GetDependencies() Dependencies {
 }
 
 func (a AnsibleLocalProvisioner) GetInstallDependenciesCommand() (map[string]string, string, []string) {
-	log.Debugf("installing galaxy role(s):")
+	cliout.Debugf("installing galaxy role(s):")
 	args := []string{"install", "--roles-path", ansibleRoleDir}
 	args = append(args, a.Dependencies.GalaxyRoles...)
 

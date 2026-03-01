@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/apex/log"
+	"github.com/z0mbix/cliout"
 	"github.com/z0mbix/rolecule/pkg/filesystem"
 	"gopkg.in/yaml.v3"
 )
@@ -57,7 +57,7 @@ func (rm *RoleMetadata) AllLocalDependencies() ([]string, map[string]string, err
 		roleMounts[srcPath] = dstPath
 		allDeps = append(allDeps, dep)
 
-		log.Debugf("adding mount for dependency %s: %s -> %s", dep, srcPath, dstPath)
+		cliout.Debugf("adding mount for dependency %s: %s -> %s", dep, srcPath, dstPath)
 	}
 
 	return allDeps, roleMounts, nil
@@ -77,10 +77,10 @@ func (rm *RoleMetadata) LocalDependencies() []string {
 				localDeps = append(localDeps, dep)
 
 				// Now recursively resolve dependencies of this dependency
-				log.Debugf("resolving dependencies for role: %s", dep)
+				cliout.Debugf("resolving dependencies for role: %s", dep)
 				nestedDeps, err := rm.resolveNestedDependencies(dep)
 				if err != nil {
-					log.Warnf("failed to resolve dependencies for %s: %v", dep, err)
+					cliout.Warnf("failed to resolve dependencies for %s: %v", dep, err)
 					continue
 				}
 
@@ -89,14 +89,14 @@ func (rm *RoleMetadata) LocalDependencies() []string {
 					if !depSet[nestedDep] {
 						depSet[nestedDep] = true
 						localDeps = append(localDeps, nestedDep)
-						log.Debugf("added nested dependency: %s", nestedDep)
+						cliout.Debugf("added nested dependency: %s", nestedDep)
 					}
 				}
 			}
 		}
 	}
 
-	log.Debugf("all local dependencies: %v", localDeps)
+	cliout.Debugf("all local dependencies: %v", localDeps)
 	return localDeps
 }
 
@@ -117,7 +117,7 @@ func (rm *RoleMetadata) GalaxyDependencies() []string {
 			// For local roles, we need to check their dependencies too
 			nestedGalaxyDeps, err := rm.resolveNestedGalaxyDependencies(dep)
 			if err != nil {
-				log.Warnf("failed to resolve galaxy dependencies for %s: %v", dep, err)
+				cliout.Warnf("failed to resolve galaxy dependencies for %s: %v", dep, err)
 				continue
 			}
 
@@ -126,13 +126,13 @@ func (rm *RoleMetadata) GalaxyDependencies() []string {
 				if !galaxyDepSet[nestedDep] {
 					galaxyDepSet[nestedDep] = true
 					galaxyDeps = append(galaxyDeps, nestedDep)
-					log.Debugf("added nested galaxy dependency: %s", nestedDep)
+					cliout.Debugf("added nested galaxy dependency: %s", nestedDep)
 				}
 			}
 		}
 	}
 
-	log.Debugf("all galaxy dependencies: %v", galaxyDeps)
+	cliout.Debugf("all galaxy dependencies: %v", galaxyDeps)
 	return galaxyDeps
 }
 
@@ -146,7 +146,7 @@ func (rm *RoleMetadata) resolveNestedDependencies(roleName string) ([]string, er
 
 	// Check if metadata file exists
 	if !filesystem.FileExists(depMetaPath) {
-		log.Debugf("no metadata file found for role %s at %s", roleName, depMetaPath)
+		cliout.Debugf("no metadata file found for role %s at %s", roleName, depMetaPath)
 		return nestedDeps, nil // Return empty slice, not an error
 	}
 
@@ -171,12 +171,12 @@ func (rm *RoleMetadata) resolveNestedDependencies(roleName string) ([]string, er
 			if !depSet[dep] {
 				depSet[dep] = true
 				nestedDeps = append(nestedDeps, dep)
-				log.Debugf("found nested dependency: %s from role: %s", dep, roleName)
+				cliout.Debugf("found nested dependency: %s from role: %s", dep, roleName)
 
 				// Recursively get dependencies of this dependency
 				subDeps, err := rm.resolveNestedDependencies(dep)
 				if err != nil {
-					log.Warnf("failed to resolve sub-dependencies for %s: %v", dep, err)
+					cliout.Warnf("failed to resolve sub-dependencies for %s: %v", dep, err)
 					continue
 				}
 
@@ -185,7 +185,7 @@ func (rm *RoleMetadata) resolveNestedDependencies(roleName string) ([]string, er
 					if !depSet[subDep] {
 						depSet[subDep] = true
 						nestedDeps = append(nestedDeps, subDep)
-						log.Debugf("added sub-dependency: %s from role: %s", subDep, dep)
+						cliout.Debugf("added sub-dependency: %s from role: %s", subDep, dep)
 					}
 				}
 			}
@@ -205,7 +205,7 @@ func (rm *RoleMetadata) resolveNestedGalaxyDependencies(roleName string) ([]stri
 
 	// Check if metadata file exists
 	if !filesystem.FileExists(depMetaPath) {
-		log.Debugf("no metadata file found for role %s at %s", roleName, depMetaPath)
+		cliout.Debugf("no metadata file found for role %s at %s", roleName, depMetaPath)
 		return galaxyDeps, nil // Return empty slice, not an error
 	}
 
@@ -230,13 +230,13 @@ func (rm *RoleMetadata) resolveNestedGalaxyDependencies(roleName string) ([]stri
 			if !galaxyDepSet[dep] {
 				galaxyDepSet[dep] = true
 				galaxyDeps = append(galaxyDeps, dep)
-				log.Debugf("found nested galaxy dependency: %s from role: %s", dep, roleName)
+				cliout.Debugf("found nested galaxy dependency: %s from role: %s", dep, roleName)
 			}
 		} else {
 			// For local roles, check their galaxy dependencies
 			nestedGalaxyDeps, err := rm.resolveNestedGalaxyDependencies(dep)
 			if err != nil {
-				log.Warnf("failed to resolve nested galaxy dependencies for %s: %v", dep, err)
+				cliout.Warnf("failed to resolve nested galaxy dependencies for %s: %v", dep, err)
 				continue
 			}
 
@@ -245,7 +245,7 @@ func (rm *RoleMetadata) resolveNestedGalaxyDependencies(roleName string) ([]stri
 				if !galaxyDepSet[nestedDep] {
 					galaxyDepSet[nestedDep] = true
 					galaxyDeps = append(galaxyDeps, nestedDep)
-					log.Debugf("added nested galaxy dependency: %s from role: %s", nestedDep, dep)
+					cliout.Debugf("added nested galaxy dependency: %s from role: %s", nestedDep, dep)
 				}
 			}
 		}

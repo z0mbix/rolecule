@@ -3,9 +3,8 @@ package cmd
 import (
 	"os"
 
-	"github.com/apex/log"
-	"github.com/apex/log/handlers/cli"
 	"github.com/spf13/cobra"
+	"github.com/z0mbix/cliout"
 )
 
 var debugLoggingEnabled bool
@@ -22,10 +21,10 @@ ansible roles in a systemd enabled container,
 then tests them with a verifier (goss).`,
 
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		log.SetHandler(cli.New(os.Stderr))
+		cliout.Default().SetWriter(os.Stderr)
 
 		if debugLoggingEnabled {
-			log.SetLevel(log.DebugLevel)
+			cliout.SetLevel(cliout.LevelDebug)
 		}
 	},
 }

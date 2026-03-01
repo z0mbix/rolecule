@@ -11,9 +11,9 @@ import (
 
 	"github.com/z0mbix/rolecule/pkg/filesystem"
 
-	"github.com/apex/log"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
+	"github.com/z0mbix/cliout"
 	"github.com/z0mbix/rolecule/pkg/container"
 	"github.com/z0mbix/rolecule/pkg/instance"
 	"github.com/z0mbix/rolecule/pkg/provisioner"
@@ -61,10 +61,10 @@ func Get() (*Config, error) {
 		return nil, fmt.Errorf("unable to decode config file: %v", err)
 	}
 
-	log.Debugf("config file: %+v", configValues)
+	cliout.Debugf("config file: %+v", configValues)
 
 	if configValues.Engine.Name == "" {
-		log.Debugf("engine not specified, using default engine: %s", defaultEngine)
+		cliout.Debugf("engine not specified, using default engine: %s", defaultEngine)
 		configValues.Engine.Name = defaultEngine
 	}
 	engine, err := container.NewEngine(configValues.Engine.Name)
@@ -89,8 +89,8 @@ func Get() (*Config, error) {
 
 	roleName := filepath.Base(cwd)
 	roleDir := filepath.Dir(cwd)
-	log.Debugf("role name: %s", roleName)
-	log.Debugf("role dir: %s", roleDir)
+	cliout.Debugf("role name: %s", roleName)
+	cliout.Debugf("role dir: %s", roleDir)
 
 	prov, err := provisioner.NewProvisioner(configValues.Provisioner)
 	if err != nil {
@@ -111,12 +111,12 @@ func Get() (*Config, error) {
 		}
 
 		for _, dep := range roleMetadata.LocalDependencies() {
-			log.Debugf("found local role dependency: %s", dep)
+			cliout.Debugf("found local role dependency: %s", dep)
 			roleMounts[filepath.Join(roleDir, dep)] = filepath.Join("/etc/ansible/roles", dep)
 		}
 
 		for _, dep := range roleMetadata.GalaxyDependencies() {
-			log.Debugf("found galaxy role dependency: %s", dep)
+			cliout.Debugf("found galaxy role dependency: %s", dep)
 		}
 
 		prov = prov.WithLocalDependencies(roleMetadata.LocalDependencies())
@@ -125,7 +125,7 @@ func Get() (*Config, error) {
 
 	var localRoleDependencies []string
 	for _, v := range roleMounts {
-		log.Debugf("adding local dependency: %s", v)
+		cliout.Debugf("adding local dependency: %s", v)
 		localRoleDependencies = append(localRoleDependencies, v)
 	}
 
@@ -177,7 +177,7 @@ func generateContainerName(name, roleName string) string {
 
 // Create creates a rolecule.yml file in the current directory
 func Create(engine string) error {
-	log.Debugf("creating config with %s engine", engine)
+	cliout.Debugf("creating config with %s engine", engine)
 
 	// Ensure the tests directory exists
 	if err := appFs.MkdirAll(testsDir, 0755); err != nil {
@@ -238,6 +238,6 @@ instances:
 		return fmt.Errorf("failed to write config file: %w", err)
 	}
 
-	log.Infof("created %s", configPath)
+	cliout.Infof("created %s", configPath)
 	return nil
 }

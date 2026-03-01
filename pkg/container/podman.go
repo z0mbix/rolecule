@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/apex/log"
+	"github.com/z0mbix/cliout"
 	"github.com/z0mbix/rolecule/pkg/command"
 )
 
@@ -47,7 +47,7 @@ func (p *PodmanEngine) Exec(containerName string, envVars map[string]string, cmd
 
 func (p *PodmanEngine) Shell(containerName string) error {
 	shell := "bash"
-	log.Debugf("opening %s shell in container", shell)
+	cliout.Debugf("opening %s shell in container", shell)
 
 	args := []string{
 		"exec",
@@ -66,7 +66,7 @@ func (p *PodmanEngine) Shell(containerName string) error {
 }
 
 func (p *PodmanEngine) Remove(name string) error {
-	log.Debug("removing container")
+	cliout.Debug("removing container")
 
 	args := []string{
 		"rm",
@@ -82,7 +82,7 @@ func (p *PodmanEngine) Remove(name string) error {
 }
 
 func (p *PodmanEngine) Exists(name string) bool {
-	log.Debug("checking if container already exists")
+	cliout.Debug("checking if container already exists")
 
 	args := []string{
 		"container",

@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/apex/log"
 	"github.com/spf13/cobra"
+	"github.com/z0mbix/cliout"
 	"github.com/z0mbix/rolecule/pkg/config"
 )
 
@@ -17,12 +17,12 @@ var convergeCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := config.Get()
 		if err != nil {
-			log.Fatal(err.Error())
+			cliout.Fatal(err.Error())
 		}
 
 		err = converge(cfg)
 		if err != nil {
-			log.Fatal(err.Error())
+			cliout.Fatal(err.Error())
 		}
 	},
 }
@@ -32,21 +32,21 @@ func converge(cfg *config.Config) error {
 		if !instance.Engine.Exists(instance.Name) {
 			err := create(cfg)
 			if err != nil {
-				log.Error(err.Error())
+				cliout.Error(err.Error())
 				continue
 			}
 		}
 
 		if len(instance.Provisioner.GetDependencies().GalaxyRoles) > 0 {
-			log.Infof("preparing container %s", instance.Name)
+			cliout.Infof("preparing container %s", instance.Name)
 			if err := instance.Prepare(); err != nil {
-				log.Error(err.Error())
+				cliout.Error(err.Error())
 			}
 		}
 
-		log.Infof("converging container %s with %s", instance.Name, instance.Provisioner)
+		cliout.Infof("converging container %s with %s", instance.Name, instance.Provisioner)
 		if err := instance.Converge(); err != nil {
-			log.Error(err.Error())
+			cliout.Error(err.Error())
 		}
 	}
 
