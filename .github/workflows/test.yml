@@ -8,6 +8,17 @@ on:
   pull_request:
 
 jobs:
+  homebrew:
+    name: Check Homebrew formula publishing
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: python3 -m unittest discover -s scripts -p '*_test.py' -v
+
   test-linux:
     runs-on: ubuntu-latest
     steps:

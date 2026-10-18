@@ -8,6 +8,31 @@ Once converged, it will run a verifier to test it all. Currently, the only suppo
 
 This should speed up testing your roles if you're currently using local or remote virtual machines.
 
+## Installation
+
+Install the latest stable release with Homebrew on macOS or Linux (Apple Silicon/ARM64 or Intel/AMD64):
+
+```sh
+brew install z0mbix/tap/rolecule
+```
+
+The formula installs a prebuilt binary. To run role tests, you also need Docker or
+Podman, Ansible, and your chosen verifier (such as Goss).
+
+### Homebrew publishing
+
+After GoReleaser publishes a stable release, GitHub Actions downloads the macOS
+and Linux archives, verifies them against the published `rolecule_VERSION_SHA256SUMS`,
+and updates `Formula/rolecule.rb` in [z0mbix/homebrew-tap](https://github.com/z0mbix/homebrew-tap).
+Prereleases leave the tap on the stable version. The **Publish Homebrew formula**
+workflow can also be run manually with the latest stable release tag to retry
+publishing without rebuilding the release. Older releases cannot replace the latest.
+
+Publishing uses the repository's `HOMEBREW_TAP_SSH_KEY` Actions secret, paired with
+a dedicated write-enabled deploy key on the tap. Each publishing repository uses
+its own key. To rotate it, register a new dedicated public key on the tap, replace
+the Actions secret with its private key, then remove the old deploy key.
+
 ## Usage
 
 First, you need to create a simple `rolecule.yml` file in either the root of your role or in the `tests` directory, e.g.:

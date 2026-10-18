@@ -1,4 +1,6 @@
 version: 2
+release:
+  prerelease: auto
 builds:
   - env:
       - CGO_ENABLED=0
@@ -35,9 +37,9 @@ nfpms:
       - rpm
 archives:
   - id: "zip"
-    format: zip
+    formats: [zip]
   - id: "tarball"
-    format: tar.gz
+    formats: [tar.gz]
 checksum:
   name_template: "{{ .ProjectName }}_{{ .Version }}_SHA256SUMS"
   algorithm: sha256
