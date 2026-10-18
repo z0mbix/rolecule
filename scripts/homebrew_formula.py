@@ -57,7 +57,6 @@ def homebrew_formula(tag, directory):
 class Rolecule < Formula
   desc "Test Ansible roles in Docker or Podman containers"
   homepage "https://github.com/z0mbix/rolecule"
-  version "{version}"
   license "GPL-3.0-only"
 
 {platform_blocks}
